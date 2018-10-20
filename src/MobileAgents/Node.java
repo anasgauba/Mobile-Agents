@@ -18,6 +18,7 @@ public class Node extends Thread{
      * This function will check for the status of the node and if the node is yellow it has a timer
      * to wait for 2 seconds and then turn red. If it turns red it should notify other neighbors.
      * It also updates the color of Circle object.
+     * (Note than in the future we might use BlockingQueues, so run will handle them)
      */
     @Override
     public void run(){
