@@ -1,5 +1,6 @@
 package MobileAgents;
 
+import javafx.geometry.Point2D;
 import javafx.scene.shape.Circle;
 
 import java.util.LinkedList;
@@ -31,7 +32,16 @@ public class Node extends Thread{
     private void passAgent(){
 
     }
-
+    public void addNeighbor(Node node){
+        neighbors.add(node);
+        liveNeighbors.add(node);
+    }
+    public int getX(){
+        return x;
+    }
+    public int getY(){
+        return y;
+    }
     public synchronized boolean recieveAgent(Agent agent){
         if(agent==null) {
             this.agent = agent;
@@ -62,7 +72,7 @@ public class Node extends Thread{
             liveNeighbors.remove(caller);
         }
     }
-    public Node(Status state, LinkedList<Node> neighbors, int x, int y, Circle circle){
+    public Node(Status state, int x, int y, Circle circle){
         this.circle=circle;
         this.x=x;
         this.y=y;
