@@ -133,7 +133,7 @@ public class MobileAgents extends Application {
         primaryStage.show();
 
         baseStation.findPaths();
-        Node node = nodes.getFirst();
+        Node node = nodes.get(3);
         node.sendID(1,node.getX(),node.getY());
 
 

@@ -96,6 +96,7 @@ public class Node extends Thread{
             return false;
         }
     }
+
     public synchronized void neigborStausChanged(Node caller){
         if(state==Status.BLUE) {
             state = Status.YELLOW;
@@ -105,11 +106,12 @@ public class Node extends Thread{
 
     public void findPaths(LinkedList<Node> path,Node caller){
         pathsToBaseStation.add(path);
-        path.addFirst(this);
+        LinkedList<Node> nextPath = new LinkedList<>(path);
+        nextPath.addFirst(this);
         for(Node node: neighbors){
             //if(!node.equals(caller)){
             if(!path.contains(node)){
-                node.findPaths(path,this);
+                node.findPaths(nextPath,this);
             }
         }
     }
@@ -119,6 +121,9 @@ public class Node extends Thread{
         returnPath.add(this);
         LinkedList<Node> path = pathsToBaseStation.getFirst();
         Node nextNode = path.getFirst();
+        System.out.println(liveNeighbors);
+        System.out.println(path);
+        System.out.println(this);
         while(!liveNeighbors.contains(nextNode)){
             pathsToBaseStation.removeFirst();
             if(pathsToBaseStation.size()>=1) {
