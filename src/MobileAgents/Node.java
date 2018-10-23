@@ -85,11 +85,18 @@ public class Node extends Thread{
      * or yellow and do not already have an agent.
      */
     private void sendCloneAgent(){
-        Agent clone = new Agent();
         for (Node n : liveNeighbors) {
             if (n.state.equals(Status.BLUE) || n.state.equals(Status.YELLOW)
                     && n.agent == null) {
+                Agent clone = new Agent();
                 recieveClone(clone);
+//                if (recieveClone(clone)) {
+//                    clone = new Agent();
+//                    clone.run();
+//                }
+//                else {
+//                    clone.run();
+//                }
             }
         }
     }
