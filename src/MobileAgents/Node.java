@@ -54,6 +54,13 @@ public class Node extends Thread{
         agent = null;
 
     }
+
+    /**
+     * Make a unique id for the agent and pass it...
+     */
+    private void makeAndSendAgentID(){
+
+    }
     public void addNeighbor(Node node){
         neighbors.add(node);
         liveNeighbors.add(node);
@@ -90,6 +97,7 @@ public class Node extends Thread{
     public synchronized boolean recieveClone(Agent clone){
         if(agent==null){
             agent=clone;
+            makeAndSendAgentID();
             return true;
         }
         else{

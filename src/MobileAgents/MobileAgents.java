@@ -136,7 +136,6 @@ public class MobileAgents extends Application {
         Node node = nodes.get(3);
         node.sendID(1,node.getX(),node.getY());
 
-
     }
 
 //    public MobileAgents(String file){
