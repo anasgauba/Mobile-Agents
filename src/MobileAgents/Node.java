@@ -4,6 +4,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.shape.Circle;
 
 import java.util.LinkedList;
+import java.util.Random;
 
 public class Node extends Thread{
     private LinkedList<LinkedList<Node>> pathsToBaseStation;
@@ -40,6 +41,15 @@ public class Node extends Thread{
      * This function will pass the agent to a RANDOM neighbor (which doesn't have an agent already) and set the agent to null (Not cloning).
      */
     private void passAgent(){
+        int length = liveNeighbors.size();
+        Random rnd = new Random();
+        boolean stat = false;
+        while(!stat) {
+            int len = rnd.nextInt(length);
+            Node node = liveNeighbors.get(len);
+            stat = node.recieveAgent(agent);
+        }
+        agent = null;
 
     }
     public void addNeighbor(Node node){

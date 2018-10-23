@@ -6,7 +6,7 @@ import java.util.LinkedList;
 
 public class BaseStation extends Node{
 
-
+    LinkedList<LinkedList<Object>> agents = new LinkedList<>();
     public BaseStation(Status state,int x, int y, Circle circle){
         super(state,x,y,circle);
     }
@@ -22,7 +22,14 @@ public class BaseStation extends Node{
      * This function will store the returned id and location of the agents
      */
     @Override
-    public synchronized void returnID(int id, int x, int y,boolean status, LinkedList<Node> path,LinkedList<Node> returnPath){
-
+    public synchronized void passID(int id, int x, int y, LinkedList<Node> path, LinkedList<Node> returnPath){
+        LinkedList<Object> agent = new LinkedList<>();
+        agent.addLast(id);
+        agent.addLast(x);
+        agent.addLast(y);
+        agents.add(agent);
+        path.addFirst(this);
+        Node node = returnPath.removeFirst();
+        node.returnID(id,x,y,true,path,returnPath);
     }
 }
