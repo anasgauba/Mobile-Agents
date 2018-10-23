@@ -11,16 +11,16 @@ public class Node extends Thread{
     protected LinkedList<Node> liveNeighbors;
     private Status state;
     private Agent agent;
-    private int x;
-    private int y;
-    private Circle circle;
+    protected int x;
+    protected int y;
+    protected Circle circle;
 
     public Node(Status state, int x, int y, Circle circle){
         this.circle=circle;
         this.x=x;
         this.y=y;
         pathsToBaseStation = new LinkedList<>();
-        this.neighbors=neighbors;
+        this.neighbors=new LinkedList<>();
         this.liveNeighbors = neighbors;
         this.state = state;
     }
