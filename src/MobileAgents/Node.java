@@ -87,7 +87,8 @@ public class Node extends Thread{
         pathsToBaseStation.add(path);
         path.addFirst(this);
         for(Node node: neighbors){
-            if(!node.equals(caller)){
+            //if(!node.equals(caller)){
+            if(!path.contains(node)){
                 node.findPaths(path,this);
             }
         }
@@ -112,6 +113,7 @@ public class Node extends Thread{
     //
     //}
     public synchronized void passID(int id, int x, int y, LinkedList<Node> path, LinkedList<Node> returnPath){
+        System.out.println(x+","+y);
         if(path.size()==0){
             path.addFirst(this);
             Node node = returnPath.removeFirst();

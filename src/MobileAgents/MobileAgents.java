@@ -131,6 +131,12 @@ public class MobileAgents extends Application {
         primaryStage.setTitle("Mobile Agents");
         primaryStage.setScene(new Scene(root, 700, 600));
         primaryStage.show();
+
+        //baseStation.findPaths();
+        //Node node = nodes.getFirst();
+        //node.sendID(1,node.getX(),node.getY());
+
+
     }
 
 //    public MobileAgents(String file){

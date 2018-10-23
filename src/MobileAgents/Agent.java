@@ -1,5 +1,8 @@
 package MobileAgents;
 
-public class Agent {
+public class Agent extends Thread{
+    @Override
+    public void run(){
 
+}
 }
