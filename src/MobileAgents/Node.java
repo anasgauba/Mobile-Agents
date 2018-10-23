@@ -15,6 +15,16 @@ public class Node extends Thread{
     private int y;
     private Circle circle;
 
+    public Node(Status state, int x, int y, Circle circle){
+        this.circle=circle;
+        this.x=x;
+        this.y=y;
+        pathsToBaseStation = new LinkedList<>();
+        this.neighbors=neighbors;
+        this.liveNeighbors = neighbors;
+        this.state = state;
+    }
+
     /**
      * This function will check for the status of the node and if the node is yellow it has a timer
      * to wait for 2 seconds and then turn red. If it turns red it should notify other neighbors.
@@ -71,15 +81,6 @@ public class Node extends Thread{
             state = Status.YELLOW;
             liveNeighbors.remove(caller);
         }
-    }
-    public Node(Status state, int x, int y, Circle circle){
-        this.circle=circle;
-        this.x=x;
-        this.y=y;
-        pathsToBaseStation = new LinkedList<>();
-        this.neighbors=neighbors;
-        this.liveNeighbors = neighbors;
-        state = state;
     }
 
     public void findPaths(LinkedList<Node> path,Node caller){
