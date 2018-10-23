@@ -38,7 +38,9 @@ public class Node extends Thread{
     }
 
     /**
-     * This function will pass the agent to a RANDOM neighbor (which doesn't have an agent already) and set the agent to null (Not cloning).
+     * This function will pass the agent to a RANDOM neighbor
+     * (which doesn't have an agent already) and set the agent to null (Not
+     * cloning).
      */
     private void passAgent(){
         int length = liveNeighbors.size();
@@ -72,11 +74,19 @@ public class Node extends Thread{
     }
 
     /**
-     * It clones and sends the clone of the agent to to live nodes that are blue or yellow and do not already have an agent.
+     * It clones and sends the clone of the agent to to live nodes that are blue
+     * or yellow and do not already have an agent.
      */
     private void sendCloneAgent(){
-
+        Agent clone = new Agent();
+        for (Node n : liveNeighbors) {
+            if (n.state.equals(Status.BLUE) || n.state.equals(Status.YELLOW)
+                    && n.agent == null) {
+                recieveClone(clone);
+            }
+        }
     }
+
     public synchronized boolean recieveClone(Agent clone){
         if(agent==null){
             agent=clone;
