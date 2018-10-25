@@ -44,6 +44,7 @@ public class MobileAgents extends Application {
         double node2YPixel;
         Circle circle;
         Line edge;
+        Node onFire=null;
 
         File file = new File("sample.txt");
         Scanner scanIn = new Scanner(file);
@@ -131,7 +132,8 @@ public class MobileAgents extends Application {
                 node1YPixel = (50 * node1Y) + 100;
                 for (Node n : nodes) {
                     if (n.getX() == node1X && n.getY() == node1Y) {
-                        n.setState(Status.RED);
+                        onFire = n;
+//                        onFire.setState(Status.RED);
                     }
                 }
                 circle = new Circle(node1XPixel, node1YPixel, 10);
@@ -151,8 +153,7 @@ public class MobileAgents extends Application {
         baseStation.findPaths();
         Node node = nodes.get(3);
         node.sendID(1,node.getX(),node.getY());
-
-
+        
     }
 
 //    public MobileAgents(String file){
