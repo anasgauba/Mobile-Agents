@@ -135,7 +135,7 @@ public class MobileAgents extends Application {
         baseStation.findPaths();
         Node node = nodes.get(3);
         node.sendID(1,node.getX(),node.getY());
-
+        baseStation.printIDs();
     }
 
 //    public MobileAgents(String file){

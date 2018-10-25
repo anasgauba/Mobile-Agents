@@ -146,7 +146,6 @@ public class Node extends Thread{
     //
     //}
     public synchronized void passID(int id, int x, int y, LinkedList<Node> path, LinkedList<Node> returnPath){
-        System.out.println(x+","+y);
         if(path.size()==0){
             path.addFirst(this);
             Node node = returnPath.removeFirst();

@@ -23,7 +23,6 @@ public class BaseStation extends Node{
      */
     @Override
     public synchronized void passID(int id, int x, int y, LinkedList<Node> path, LinkedList<Node> returnPath){
-        System.out.println(id);
         LinkedList<Object> agent = new LinkedList<>();
         agent.addLast(id);
         agent.addLast(x);
@@ -32,5 +31,10 @@ public class BaseStation extends Node{
         path.addFirst(this);
         Node node = returnPath.removeFirst();
         node.returnID(id,x,y,true,path,returnPath);
+    }
+    public void printIDs(){
+        for(LinkedList<Object> list: agents){
+            System.out.println(list.get(0)+", "+list.get(1)+", "+list.get(2));
+        }
     }
 }
