@@ -26,6 +26,10 @@ public class Node extends Thread{
         this.state = state;
     }
 
+    public void setState(Status state) {
+        this.state = state;
+    }
+
     /**
      * This function will check for the status of the node and if the node is yellow it has a timer
      * to wait for 2 seconds and then turn red. If it turns red it should notify other neighbors.
@@ -85,11 +89,18 @@ public class Node extends Thread{
      * or yellow and do not already have an agent.
      */
     private void sendCloneAgent(){
-        Agent clone = new Agent();
         for (Node n : liveNeighbors) {
             if (n.state.equals(Status.BLUE) || n.state.equals(Status.YELLOW)
                     && n.agent == null) {
+                Agent clone = new Agent();
                 recieveClone(clone);
+//                if (recieveClone(clone)) {
+//                    clone = new Agent();
+//                    clone.run();
+//                }
+//                else {
+//                    clone.run();
+//                }
             }
         }
     }
