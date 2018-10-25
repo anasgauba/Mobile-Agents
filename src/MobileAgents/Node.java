@@ -63,7 +63,9 @@ public class Node extends Thread{
      * Make a unique id for the agent and pass it...
      */
     private void makeAndSendAgentID(){
-
+        int uniqueID = 0;
+        uniqueID++;
+        sendID(uniqueID, x, y);
     }
     public void addNeighbor(Node node){
         neighbors.add(node);
