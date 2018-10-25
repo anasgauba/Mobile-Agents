@@ -26,6 +26,10 @@ public class Node extends Thread{
         this.state = state;
     }
 
+    public void setState(Status state) {
+        this.state = state;
+    }
+
     /**
      * This function will check for the status of the node and if the node is yellow it has a timer
      * to wait for 2 seconds and then turn red. If it turns red it should notify other neighbors.

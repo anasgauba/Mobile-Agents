@@ -90,39 +90,55 @@ public class MobileAgents extends Application {
         Scanner scanIn2 = new Scanner(file);
         while (scanIn2.hasNext()) {
             String x = scanIn2.next();
-        if (x.equals("edge")) {
-            node1X = scanIn2.nextInt();
-            node1Y = scanIn2.nextInt();
-            node2X = scanIn2.nextInt();
-            node2Y = scanIn2.nextInt();
-            node1XPixel = (50*node1X) + 100;
-            node1YPixel = (50*node1Y) + 100;
-            node2XPixel = (50*node2X) + 100;
-            node2YPixel = (50*node2Y) + 100;
-            Node n1=null;
-            Node n2=null;
-            for(Node n: nodes){
-                if (n.getX()==node1X && n.getY()==node1Y){
-                    n1=n;
+            if (x.equals("edge")) {
+                node1X = scanIn2.nextInt();
+                node1Y = scanIn2.nextInt();
+                node2X = scanIn2.nextInt();
+                node2Y = scanIn2.nextInt();
+                node1XPixel = (50 * node1X) + 100;
+                node1YPixel = (50 * node1Y) + 100;
+                node2XPixel = (50 * node2X) + 100;
+                node2YPixel = (50 * node2Y) + 100;
+                Node n1 = null;
+                Node n2 = null;
+                for (Node n : nodes) {
+                    if (n.getX() == node1X && n.getY() == node1Y) {
+                        n1 = n;
+                    }
+                    if (n.getX() == node2X && n.getY() == node2Y) {
+                        n2 = n;
+                    }
                 }
-                if(n.getX()==node2X && n.getY()==node2Y){
-                    n2=n;
+                if (baseStation.getX() == node1X && baseStation.getY() == node1Y) {
+                    n1 = baseStation;
                 }
+                else if (baseStation.getX() == node2X && baseStation.getY()
+                        == node2Y) {
+                    n2 = baseStation;
+                }
+                if (n1 != null && n2 != null) {
+                    n1.addNeighbor(n2);
+                    n2.addNeighbor(n1);
+                }
+                edge = new Line(node1XPixel, node1YPixel, node2XPixel,
+                        node2YPixel);
+                root.getChildren().add(edge);
             }
-            if(baseStation.getX()==node1X && baseStation.getY()==node1Y){
-                n1=baseStation;
+            if (x.equals("fire")) {
+                node1X = scanIn2.nextInt();
+                node1Y = scanIn2.nextInt();
+                node1XPixel = (50 * node1X) + 100;
+                node1YPixel = (50 * node1Y) + 100;
+                for (Node n : nodes) {
+                    if (n.getX() == node1X && n.getY() == node1Y) {
+                        n.setState(Status.RED);
+                    }
+                }
+                circle = new Circle(node1XPixel, node1YPixel, 10);
+                circle.setFill(Paint.valueOf("red"));
+                circles.add(circle);
             }
-            else if(baseStation.getX()==node2X && baseStation.getY()==node2Y){
-                n2=baseStation;
-            }
-            if(n1!=null && n2!=null) {
-                n1.addNeighbor(n2);
-                n2.addNeighbor(n1);
-            }
-            edge = new Line(node1XPixel, node1YPixel, node2XPixel,
-                    node2YPixel);
-            root.getChildren().add(edge);
-        }
+
         }
         for(Circle c:circles){
             root.getChildren().add(c);
@@ -135,6 +151,7 @@ public class MobileAgents extends Application {
         baseStation.findPaths();
         Node node = nodes.get(3);
         node.sendID(1,node.getX(),node.getY());
+
 
     }
 
