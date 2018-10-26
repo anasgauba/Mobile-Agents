@@ -5,6 +5,9 @@ import javafx.scene.shape.Circle;
 
 import java.util.LinkedList;
 import java.util.Random;
+import java.util.concurrent.BlockingDeque;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class Node extends Thread{
     private LinkedList<LinkedList<Node>> pathsToBaseStation;
@@ -15,6 +18,9 @@ public class Node extends Thread{
     protected int x;
     protected int y;
     protected Circle circle;
+    private int id;
+    private boolean killed=false;
+    private BlockingQueue<LinkedList<Object>> queue;
 
     public Node(Status state, int x, int y, Circle circle){
         this.circle=circle;
@@ -24,10 +30,7 @@ public class Node extends Thread{
         this.neighbors=new LinkedList<>();
         this.liveNeighbors = neighbors;
         this.state = state;
-    }
-
-    public void setState(Status state) {
-        this.state = state;
+        queue = new LinkedBlockingQueue<LinkedList<Object>>();
     }
 
     /**
@@ -38,7 +41,19 @@ public class Node extends Thread{
      */
     @Override
     public void run(){
-
+        while(!killed) {
+            try {
+                LinkedList<Object> list = queue.take();
+                if (list.get(3) == null) {
+                    passID((int) list.get(0), (int) list.get(1), (int) list.get(2), (LinkedList<Node>) list.get(4), (LinkedList<Node>) list.get(5));
+                } else {
+                    returnID((int) list.get(0), (int) list.get(1), (int) list.get(2), (boolean) list.get(3), (LinkedList<Node>) list.get(4), (LinkedList<Node>) list.get(5));
+                }
+            } catch (Exception e) {
+                System.out.println("Exited");
+                killed=true;
+            }
+        }
     }
 
     /**
@@ -56,27 +71,29 @@ public class Node extends Thread{
             stat = node.recieveAgent(agent);
         }
         agent = null;
-
     }
-
+    public void setID(int id){
+        this.id=id;
+    }
     /**
      * Make a unique id for the agent and pass it...
      */
     private void makeAndSendAgentID(){
-        int uniqueID = 0;
-        uniqueID++;
-        sendID(uniqueID, x, y);
+        sendID(id, x, y);
     }
     public void addNeighbor(Node node){
         neighbors.add(node);
         liveNeighbors.add(node);
     }
+
     public int getX(){
         return x;
     }
+
     public int getY(){
         return y;
     }
+
     public synchronized boolean recieveAgent(Agent agent){
         if(agent==null) {
             this.agent = agent;
@@ -95,14 +112,7 @@ public class Node extends Thread{
             if (n.state.equals(Status.BLUE) || n.state.equals(Status.YELLOW)
                     && n.agent == null) {
                 Agent clone = new Agent();
-                recieveClone(clone);
-//                if (recieveClone(clone)) {
-//                    clone = new Agent();
-//                    clone.run();
-//                }
-//                else {
-//                    clone.run();
-//                }
+                n.recieveClone(clone);
             }
         }
     }
@@ -122,6 +132,7 @@ public class Node extends Thread{
         if(state==Status.BLUE) {
             state = Status.YELLOW;
             liveNeighbors.remove(caller);
+
         }
     }
 
@@ -159,6 +170,16 @@ public class Node extends Thread{
     //
     //}
     public synchronized void passID(int id, int x, int y, LinkedList<Node> path, LinkedList<Node> returnPath){
+        LinkedList<Object> list = new LinkedList<>();
+        list.addLast(id);
+        list.addLast(x);
+        list.addLast(y);
+        list.addLast(null);
+        list.addLast(path);
+        list.addLast(returnPath);
+        queue.add(list);
+    }
+    public synchronized void passIDFromQueue(int id, int x, int y, LinkedList<Node> path, LinkedList<Node> returnPath){
         if(path.size()==0){
             path.addFirst(this);
             Node node = returnPath.removeFirst();
@@ -175,7 +196,17 @@ public class Node extends Thread{
         returnPath.addFirst(this);
         nextNode.passID(id,x,y,path,returnPath);
     }
-    public synchronized void returnID (int id, int x, int y,boolean status, LinkedList<Node> path,LinkedList<Node> returnPath){
+    public synchronized void returnID(int id, int x, int y,boolean status, LinkedList<Node> path,LinkedList<Node> returnPath){
+        LinkedList<Object> list = new LinkedList<>();
+        list.addLast(id);
+        list.addLast(x);
+        list.addLast(y);
+        list.addLast(state);
+        list.addLast(path);
+        list.addLast(returnPath);
+        queue.add(list);
+    }
+    public synchronized void returnIDFromQueue (int id, int x, int y,boolean status, LinkedList<Node> path,LinkedList<Node> returnPath){
         if(!status) {
             pathsToBaseStation.remove(path);
         }

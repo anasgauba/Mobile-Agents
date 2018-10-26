@@ -45,7 +45,7 @@ public class MobileAgents extends Application {
         Circle circle;
         Line edge;
         Node onFire=null;
-
+        int id=0;
         File file = new File("sample.txt");
         Scanner scanIn = new Scanner(file);
         LinkedList<Node> nodes = new LinkedList<Node>();
@@ -64,6 +64,8 @@ public class MobileAgents extends Application {
                 circle = new Circle(node1XPixel, node1YPixel, 10);
                 circle.setFill(Paint.valueOf("blue"));
                 Node node = new Node(Status.BLUE, node1X, node1Y, circle);
+                node.setID(id);
+                id++;
                 //root.getChildren().add(circle);
                 circles.add(circle);
                 nodes.add(node);

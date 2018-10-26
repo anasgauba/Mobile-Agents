@@ -1,7 +1,7 @@
 package MobileAgents;
 
-public class Agent extends Thread{
-    public Agent(){
+public class StatusChecker extends Thread {
+    public StatusChecker(){
         run();
     }
     @Override
