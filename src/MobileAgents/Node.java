@@ -56,8 +56,11 @@ public class Node extends Thread{
         }
     }
 
-    public Status getStatus(){
+    public synchronized Status getStatus(){
         return state;
+    }
+    public synchronized void setState(Status status){
+        state=status;
     }
     /**
      * This function will pass the agent to a RANDOM neighbor
@@ -114,7 +117,7 @@ public class Node extends Thread{
         for (Node n : liveNeighbors) {
             if (n.state.equals(Status.BLUE) || n.state.equals(Status.YELLOW)
                     && n.agent == null) {
-                Agent clone = new Agent();
+                Agent clone = new Agent(n,false);
                 n.recieveClone(clone);
             }
         }
@@ -134,8 +137,8 @@ public class Node extends Thread{
     public synchronized void neigborStausChanged(Node caller){
         if(state==Status.BLUE) {
             state = Status.YELLOW;
+            StatusChecker burner = new StatusChecker(this);
             liveNeighbors.remove(caller);
-
         }
     }
 
