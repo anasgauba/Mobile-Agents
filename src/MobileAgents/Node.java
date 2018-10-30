@@ -1,6 +1,7 @@
 package MobileAgents;
 
 import javafx.geometry.Point2D;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 
 import java.util.LinkedList;
@@ -45,9 +46,9 @@ public class Node extends Thread{
             try {
                 LinkedList<Object> list = queue.take();
                 if (list.get(3) == null) {
-                    passID((int) list.get(0), (int) list.get(1), (int) list.get(2), (LinkedList<Node>) list.get(4), (LinkedList<Node>) list.get(5));
+                    passIDFromQueue((int) list.get(0), (int) list.get(1), (int) list.get(2), (LinkedList<Node>) list.get(4), (LinkedList<Node>) list.get(5));
                 } else {
-                    returnID((int) list.get(0), (int) list.get(1), (int) list.get(2), (boolean) list.get(3), (LinkedList<Node>) list.get(4), (LinkedList<Node>) list.get(5));
+                    returnIDFromQueue((int) list.get(0), (int) list.get(1), (int) list.get(2), (boolean) list.get(3), (LinkedList<Node>) list.get(4), (LinkedList<Node>) list.get(5));
                 }
             } catch (Exception e) {
                 System.out.println("Exited");
@@ -60,6 +61,15 @@ public class Node extends Thread{
         return state;
     }
     public synchronized void setState(Status status){
+        if(status.equals(Status.RED)){
+            circle.setFill(Paint.valueOf("red"));
+            if(agent!=null){
+                agent.kill();
+            }
+        }
+        else if(status.equals(Status.YELLOW)){
+            circle.setFill(Paint.valueOf("yellow"));
+        }
         state=status;
     }
     /**
@@ -67,16 +77,19 @@ public class Node extends Thread{
      * (which doesn't have an agent already) and set the agent to null (Not
      * cloning).
      */
-    public void passAgent(){
+    public Node passAgent(){
+        System.out.println("were here");
         int length = liveNeighbors.size();
         Random rnd = new Random();
         boolean stat = false;
+        Node node=null;
         while(!stat) {
             int len = rnd.nextInt(length);
-            Node node = liveNeighbors.get(len);
+            node = liveNeighbors.get(len);
             stat = node.recieveAgent(agent);
         }
         agent = null;
+        return node;
     }
     public void setID(int id){
         this.id=id;
@@ -103,12 +116,15 @@ public class Node extends Thread{
     public synchronized boolean recieveAgent(Agent agent){
         if(this.agent==null) {
             this.agent = agent;
+            markNode();
             return true;
         }
         return false;
 
     }
-
+    private synchronized void markNode(){
+        circle.setStroke(Paint.valueOf("purple"));
+    }
     /**
      * It clones and sends the clone of the agent to to live nodes that are blue
      * or yellow and do not already have an agent.
@@ -127,6 +143,7 @@ public class Node extends Thread{
         if(agent==null){
             agent=clone;
             makeAndSendAgentID();
+            markNode();
             return true;
         }
         else{
@@ -134,9 +151,14 @@ public class Node extends Thread{
         }
     }
 
-    public synchronized void neigborStausChanged(Node caller){
-        if(state==Status.BLUE) {
-            state = Status.YELLOW;
+    public synchronized void scream(){
+        for(Node node: liveNeighbors){
+            node.neigborStausChanged(this);
+        }
+    }
+    private synchronized void neigborStausChanged(Node caller){
+        if(this.getStatus()==Status.BLUE) {
+            this.setState(Status.YELLOW);
             StatusChecker burner = new StatusChecker(this);
             liveNeighbors.remove(caller);
         }
