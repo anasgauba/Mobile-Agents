@@ -8,7 +8,7 @@ public class Agent extends Thread {
         this.currentNode = node;
         this.tasks = task;
 //        this.killed = false;
-        run();
+        start();
     }
     public void kill(){
         killed=true;
@@ -20,6 +20,7 @@ public class Agent extends Thread {
     public void run() {
         while (tasks) {
             Node nextNode = currentNode.passAgent();
+            //System.out.println(nextNode.getStatus());
             currentNode = nextNode;
             if (currentNode.getStatus().equals(Status.YELLOW)) {
                 currentNode.sendCloneAgent();
@@ -31,6 +32,6 @@ public class Agent extends Thread {
                 currentNode.sendCloneAgent();
             }
         }
-        currentNode.scream();
+        //currentNode.scream();
     }
 }

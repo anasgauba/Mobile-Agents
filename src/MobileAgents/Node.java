@@ -89,6 +89,7 @@ public class Node extends Thread{
             stat = node.recieveAgent(agent);
         }
         agent = null;
+        unmarkNode();
         return node;
     }
     public void setID(int id){
@@ -120,10 +121,15 @@ public class Node extends Thread{
             return true;
         }
         return false;
-
     }
     private synchronized void markNode(){
+
         circle.setStroke(Paint.valueOf("purple"));
+        circle.setStrokeWidth(3);
+        //circle.setStyle("-fx-border-color: purple; -fx-border-width: 10");
+    }
+    private synchronized void unmarkNode(){
+        circle.setStroke(null);
     }
     /**
      * It clones and sends the clone of the agent to to live nodes that are blue
@@ -152,12 +158,13 @@ public class Node extends Thread{
     }
 
     public synchronized void scream(){
+        unmarkNode();
         for(Node node: liveNeighbors){
             node.neigborStausChanged(this);
         }
     }
     private synchronized void neigborStausChanged(Node caller){
-        if(this.getStatus()==Status.BLUE) {
+        if(this.getStatus().equals(Status.BLUE)) {
             this.setState(Status.YELLOW);
             StatusChecker burner = new StatusChecker(this);
             liveNeighbors.remove(caller);

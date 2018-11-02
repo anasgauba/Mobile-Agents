@@ -156,9 +156,11 @@ public class MobileAgents extends Application {
         //Node node = nodes.get(3);
         //node.sendID(public1,node.getX(),node.getY());
 
+        baseStation.findPaths();
         onFire.setState(Status.RED);
         onFire.scream();
         baseStation.recieveAgent(new Agent(baseStation,true));
+        System.out.println("TErminates");
 
     }
 

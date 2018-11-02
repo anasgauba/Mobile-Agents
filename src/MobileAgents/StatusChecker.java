@@ -4,14 +4,16 @@ public class StatusChecker extends Thread {
     private boolean dead = false;
     private Node node ;
     public StatusChecker(Node node){
-        run();
         this.node=node;
+        start();
     }
     @Override
     public void run(){
         try {
             sleep(3000);
             node.setState(Status.RED);
+            node.scream();
+            node.stop();
         }
         catch(Exception e){
             stop();
