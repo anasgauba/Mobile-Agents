@@ -22,6 +22,7 @@ public class Node extends Thread{
     private int id;
     private boolean killed = false;
     private BlockingQueue<LinkedList<Object>> queue;
+    private StatusChecker burner=null;
 
     public Node(Status state, int x, int y, Circle circle){
         this.circle=circle;
@@ -49,7 +50,6 @@ public class Node extends Thread{
                 if (list.get(3) == null) {
                     passIDFromQueue((int) list.get(0), (int) list.get(1), (int) list.get(2), (LinkedList<Node>) list.get(4), (LinkedList<Node>) list.get(5));
                 } else {
-                    System.out.println("HERE");
                     returnIDFromQueue((int) list.get(0), (int) list.get(1), (int) list.get(2), (boolean) list.get(3), (LinkedList<Node>) list.get(4), (LinkedList<Node>) list.get(5));
                 }
             } catch (Exception e) {
@@ -61,6 +61,9 @@ public class Node extends Thread{
 
     public synchronized Status getStatus(){
         return state;
+    }
+    public StatusChecker getBurner(){
+        return burner;
     }
     public synchronized void setState(Status status){
         if(status.equals(Status.RED)){
@@ -136,7 +139,7 @@ public class Node extends Thread{
      * It clones and sends the clone of the agent to to live nodes that are blue
      * or yellow and do not already have an agent.
      */
-    public void sendCloneAgent(){
+    public synchronized void sendCloneAgent(){
         for (Node n : liveNeighbors) {
             if (n.state.equals(Status.BLUE) || n.state.equals(Status.YELLOW)
                     && n.agent == null) {
@@ -148,6 +151,7 @@ public class Node extends Thread{
 
     public synchronized boolean recieveClone(Agent clone){
         if(agent==null){
+            System.out.println("Received>>>"+this);
             agent=clone;
             makeAndSendAgentID();
             markNode();
@@ -166,9 +170,12 @@ public class Node extends Thread{
     }
     private synchronized void neigborStausChanged(Node caller){
         if(this.getStatus().equals(Status.BLUE)) {
+            System.out.println("Screammmm>>>"+this);
             this.setState(Status.YELLOW);
-            StatusChecker burner = new StatusChecker(this);
+            burner = new StatusChecker(this);
+            //System.out.println(agent);
             liveNeighbors.remove(caller);
+            System.out.println("Done");
         }
     }
 
@@ -184,7 +191,7 @@ public class Node extends Thread{
         }
     }
 
-    public void sendID(int id, int x, int y){
+    public synchronized void sendID(int id, int x, int y){
         LinkedList<Node> returnPath = new LinkedList<Node>();
         returnPath.add(this);
         LinkedList<Node> path = pathsToBaseStation.getFirst();
@@ -235,19 +242,19 @@ public class Node extends Thread{
         nextNode.passID(id,x,y,path,returnPath);
     }
     public synchronized void returnID(int id, int x, int y,boolean status, LinkedList<Node> path,LinkedList<Node> returnPath){
-        System.out.println(status);
+        //System.out.println(status);
         LinkedList<Object> list = new LinkedList<>();
         list.addLast(id);
         list.addLast(x);
         list.addLast(y);
-        list.addLast(state);
+        list.addLast(status);
         list.addLast(path);
         list.addLast(returnPath);
         queue.add(list);
     }
     public synchronized void returnIDFromQueue (int id, int x, int y,boolean status, LinkedList<Node> path,LinkedList<Node> returnPath){
-        System.out.println(returnPath);
-        System.out.println(this);
+        //System.out.println(returnPath);
+        //System.out.println(this);
         if(!status) {
             pathsToBaseStation.remove(path);
         }

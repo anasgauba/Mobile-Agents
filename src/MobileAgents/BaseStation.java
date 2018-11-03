@@ -30,7 +30,7 @@ public class BaseStation extends Node{
         agents.add(agent);
         path.addFirst(this);
         Node node = returnPath.removeFirst();
-        node.returnID(id,x,y,true,path,returnPath);
+        returnID(id,x,y,true,path,returnPath);
         System.out.println(agent.get(0)+", "+agent.get(1)+", "+agent.get(2));
     }
     @Override

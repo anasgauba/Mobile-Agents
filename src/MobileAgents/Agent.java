@@ -4,6 +4,7 @@ public class Agent extends Thread {
     private Node currentNode;
     private boolean tasks;
     private boolean killed=false;
+    private boolean cloned = false;
     public Agent(Node node, boolean task) {
         this.currentNode = node;
         this.tasks = task;
@@ -28,8 +29,18 @@ public class Agent extends Thread {
             }
         }
         while(!killed){
-            if(currentNode.getStatus().equals(Status.YELLOW)){
+            if(!cloned && currentNode.getStatus().equals(Status.YELLOW)){
                 currentNode.sendCloneAgent();
+                cloned=true;
+            }
+            else if(cloned && currentNode.getBurner()!=null){
+                try {
+                    currentNode.getBurner().join();
+                    killed=true;
+                }
+                catch (Exception e){
+                    System.out.println(e);
+                }
             }
         }
         //currentNode.scream();
