@@ -30,6 +30,10 @@ public class MobileAgents extends Application {
     public static void main(String [] args){
         launch(args);
     }
+    @Override
+    public void stop(){
+        System.exit(0);
+    }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
