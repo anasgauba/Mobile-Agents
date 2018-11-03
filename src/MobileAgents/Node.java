@@ -30,7 +30,7 @@ public class Node extends Thread{
         this.y=y;
         pathsToBaseStation = new LinkedList<>();
         this.neighbors=new LinkedList<>();
-        this.liveNeighbors = neighbors;
+        this.liveNeighbors = new LinkedList<>();
         this.state = state;
         queue = new LinkedBlockingQueue<LinkedList<Object>>();
         start();
@@ -140,18 +140,23 @@ public class Node extends Thread{
      * or yellow and do not already have an agent.
      */
     public synchronized void sendCloneAgent(){
+        //System.out.println(liveNeighbors);
         for (Node n : liveNeighbors) {
             if (n.state.equals(Status.BLUE) || n.state.equals(Status.YELLOW)
                     && n.agent == null) {
                 Agent clone = new Agent(n,false);
-                n.recieveClone(clone);
+                System.out.println("sent clone");
+                boolean returedVal = n.recieveClone(clone);
+                if(!returedVal){
+                    clone.stop();
+                }
             }
         }
     }
 
     public synchronized boolean recieveClone(Agent clone){
         if(agent==null){
-            System.out.println("Received>>>"+this);
+            System.out.println("received clone");
             agent=clone;
             makeAndSendAgentID();
             markNode();
@@ -170,12 +175,12 @@ public class Node extends Thread{
     }
     private synchronized void neigborStausChanged(Node caller){
         if(this.getStatus().equals(Status.BLUE)) {
-            System.out.println("Screammmm>>>"+this);
+            //System.out.println("Screammmm>>>"+this);
             this.setState(Status.YELLOW);
             burner = new StatusChecker(this);
-            //System.out.println(agent);
+            //System.out.println(liveNeighbors);
             liveNeighbors.remove(caller);
-            System.out.println("Done");
+            //System.out.println(liveNeighbors);
         }
     }
 

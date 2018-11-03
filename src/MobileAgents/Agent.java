@@ -30,6 +30,7 @@ public class Agent extends Thread {
         }
         while(!killed){
             if(!cloned && currentNode.getStatus().equals(Status.YELLOW)){
+                System.out.println("hrret");
                 currentNode.sendCloneAgent();
                 cloned=true;
             }
