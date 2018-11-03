@@ -20,7 +20,7 @@ public class Node extends Thread{
     protected int y;
     protected Circle circle;
     private int id;
-    private boolean killed=false;
+    private boolean killed = false;
     private BlockingQueue<LinkedList<Object>> queue;
 
     public Node(Status state, int x, int y, Circle circle){
@@ -32,6 +32,7 @@ public class Node extends Thread{
         this.liveNeighbors = neighbors;
         this.state = state;
         queue = new LinkedBlockingQueue<LinkedList<Object>>();
+        start();
     }
 
     /**
@@ -78,7 +79,6 @@ public class Node extends Thread{
      * cloning).
      */
     public Node passAgent(){
-        System.out.println("were here");
         int length = liveNeighbors.size();
         Random rnd = new Random();
         boolean stat = false;
@@ -188,9 +188,9 @@ public class Node extends Thread{
         returnPath.add(this);
         LinkedList<Node> path = pathsToBaseStation.getFirst();
         Node nextNode = path.getFirst();
-        System.out.println(liveNeighbors);
-        System.out.println(path);
-        System.out.println(this);
+        //System.out.println(liveNeighbors);
+        //System.out.println(path);
+        //System.out.println(this);
         while(!liveNeighbors.contains(nextNode)){
             pathsToBaseStation.removeFirst();
             if(pathsToBaseStation.size()>=1) {
@@ -212,9 +212,11 @@ public class Node extends Thread{
         list.addLast(null);
         list.addLast(path);
         list.addLast(returnPath);
+        //System.out.println(list);
         queue.add(list);
     }
     public synchronized void passIDFromQueue(int id, int x, int y, LinkedList<Node> path, LinkedList<Node> returnPath){
+        //System.out.println(">>>"+this);
         if(path.size()==0){
             path.addFirst(this);
             Node node = returnPath.removeFirst();
@@ -232,6 +234,7 @@ public class Node extends Thread{
         nextNode.passID(id,x,y,path,returnPath);
     }
     public synchronized void returnID(int id, int x, int y,boolean status, LinkedList<Node> path,LinkedList<Node> returnPath){
+        System.out.println("returned");
         LinkedList<Object> list = new LinkedList<>();
         list.addLast(id);
         list.addLast(x);

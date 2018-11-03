@@ -160,7 +160,6 @@ public class MobileAgents extends Application {
         onFire.setState(Status.RED);
         onFire.scream();
         baseStation.recieveAgent(new Agent(baseStation,true));
-        System.out.println("TErminates");
 
     }
 
