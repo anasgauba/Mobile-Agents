@@ -49,6 +49,7 @@ public class Node extends Thread{
                 if (list.get(3) == null) {
                     passIDFromQueue((int) list.get(0), (int) list.get(1), (int) list.get(2), (LinkedList<Node>) list.get(4), (LinkedList<Node>) list.get(5));
                 } else {
+                    System.out.println("HERE");
                     returnIDFromQueue((int) list.get(0), (int) list.get(1), (int) list.get(2), (boolean) list.get(3), (LinkedList<Node>) list.get(4), (LinkedList<Node>) list.get(5));
                 }
             } catch (Exception e) {
@@ -234,7 +235,7 @@ public class Node extends Thread{
         nextNode.passID(id,x,y,path,returnPath);
     }
     public synchronized void returnID(int id, int x, int y,boolean status, LinkedList<Node> path,LinkedList<Node> returnPath){
-        System.out.println("returned");
+        System.out.println(status);
         LinkedList<Object> list = new LinkedList<>();
         list.addLast(id);
         list.addLast(x);
@@ -245,6 +246,8 @@ public class Node extends Thread{
         queue.add(list);
     }
     public synchronized void returnIDFromQueue (int id, int x, int y,boolean status, LinkedList<Node> path,LinkedList<Node> returnPath){
+        System.out.println(returnPath);
+        System.out.println(this);
         if(!status) {
             pathsToBaseStation.remove(path);
         }

@@ -33,6 +33,15 @@ public class BaseStation extends Node{
         node.returnID(id,x,y,true,path,returnPath);
         System.out.println(agent.get(0)+", "+agent.get(1)+", "+agent.get(2));
     }
+    @Override
+    public void sendID(int id, int x, int y){
+        LinkedList<Object> agent = new LinkedList<>();
+        agent.addLast(id);
+        agent.addLast(x);
+        agent.addLast(y);
+        agents.add(agent);
+        System.out.println(agent.get(0)+", "+agent.get(1)+", "+agent.get(2));
+    }
     public void printIDs(){
         for(LinkedList<Object> list: agents){
             System.out.println(list.get(0)+", "+list.get(1)+", "+list.get(2));
