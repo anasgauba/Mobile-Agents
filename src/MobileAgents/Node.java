@@ -30,7 +30,7 @@ public class Node extends Thread{
         this.y=y;
         pathsToBaseStation = new LinkedList<>();
         this.neighbors=new LinkedList<>();
-        this.liveNeighbors = neighbors;
+        this.liveNeighbors = new LinkedList<>();
         this.state = state;
         queue = new LinkedBlockingQueue<LinkedList<Object>>();
         start();
@@ -172,14 +172,10 @@ public class Node extends Thread{
     }
     private synchronized void neigborStausChanged(Node caller){
         if(this.getStatus().equals(Status.BLUE)) {
-            System.out.println("Screammmm>>>"+this.getX() +","+ this.getY());
             this.setState(Status.YELLOW);
-            System.out.println("I am yellow " + this.getX() + ", " + this.getY());
             burner = new StatusChecker(this);
             //System.out.println(agent);
             liveNeighbors.remove(caller);
-            System.out.println("neighbors size " + liveNeighbors.size());
-            System.out.println("Done");
         }
     }
 
@@ -196,6 +192,7 @@ public class Node extends Thread{
     }
 
     public synchronized void sendID(int id, int x, int y){
+        System.out.println("send id..."+id);
         LinkedList<Node> returnPath = new LinkedList<Node>();
         returnPath.add(this);
         LinkedList<Node> path = pathsToBaseStation.getFirst();
@@ -246,7 +243,7 @@ public class Node extends Thread{
         nextNode.passID(id,x,y,path,returnPath);
     }
     public synchronized void returnID(int id, int x, int y,boolean status, LinkedList<Node> path,LinkedList<Node> returnPath){
-        //System.out.println(status);
+        System.out.println(status);
         LinkedList<Object> list = new LinkedList<>();
         list.addLast(id);
         list.addLast(x);
@@ -264,6 +261,7 @@ public class Node extends Thread{
         }
         if (returnPath.size()==0) {
             if(!status){
+                System.out.println(this.liveNeighbors);
                 sendID(id,x,y);
             }
         }
