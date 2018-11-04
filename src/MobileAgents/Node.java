@@ -30,7 +30,7 @@ public class Node extends Thread{
         this.y=y;
         pathsToBaseStation = new LinkedList<>();
         this.neighbors=new LinkedList<>();
-        this.liveNeighbors = new LinkedList<>();
+        this.liveNeighbors = neighbors;
         this.state = state;
         queue = new LinkedBlockingQueue<LinkedList<Object>>();
         start();
@@ -69,8 +69,7 @@ public class Node extends Thread{
         if(status.equals(Status.RED)){
             circle.setFill(Paint.valueOf("red"));
             if(agent!=null){
-                //agent.kill();
-                agent.stop();
+                agent.kill();
             }
         }
         else if(status.equals(Status.YELLOW)){
@@ -141,25 +140,18 @@ public class Node extends Thread{
      * or yellow and do not already have an agent.
      */
     public void sendCloneAgent(){
-        System.out.println("$#$$#$  "+id);
-        LinkedList<Node> tempLiveNeighbors = new LinkedList<>(liveNeighbors);
-        for (Node n : tempLiveNeighbors) {
+        for (Node n : liveNeighbors) {
             if (n.state.equals(Status.BLUE) || n.state.equals(Status.YELLOW)
                     && n.agent == null) {
-                System.out.println(id+">>>"+n.id);
                 Agent clone = new Agent(n,false);
-                boolean returedVal = n.recieveClone(clone);
-                if(!returedVal){
-                    clone.stop();
-                }
+                n.recieveClone(clone);
             }
         }
     }
 
     public synchronized boolean recieveClone(Agent clone){
-        System.out.println(">>>"+id);
         if(agent==null){
-            System.out.println(id);
+            System.out.println("Received>>>"+this.getX()+","+this.getY());
             agent=clone;
             makeAndSendAgentID();
             markNode();
@@ -170,18 +162,22 @@ public class Node extends Thread{
         }
     }
 
-    public synchronized void scream(){
+    public void scream(){
         unmarkNode();
-        LinkedList<Node> tempLiveNeighbors = new LinkedList<>(liveNeighbors);
-        for(Node node: tempLiveNeighbors){
+        for(Node node: liveNeighbors){
             node.neigborStausChanged(this);
         }
     }
     private synchronized void neigborStausChanged(Node caller){
         if(this.getStatus().equals(Status.BLUE)) {
-            liveNeighbors.remove(caller);
+            System.out.println("Screammmm>>>"+this.getX() +","+ this.getY());
             this.setState(Status.YELLOW);
+            System.out.println("I am yellow " + this.getX() + ", " + this.getY());
             burner = new StatusChecker(this);
+            //System.out.println(agent);
+            liveNeighbors.remove(caller);
+            System.out.println("neighbors size " + liveNeighbors.size());
+            System.out.println("Done");
         }
     }
 
