@@ -69,7 +69,8 @@ public class Node extends Thread{
         if(status.equals(Status.RED)){
             circle.setFill(Paint.valueOf("red"));
             if(agent!=null){
-                agent.kill();
+                //agent.kill();
+                agent.stop();
             }
         }
         else if(status.equals(Status.YELLOW)){
@@ -139,13 +140,14 @@ public class Node extends Thread{
      * It clones and sends the clone of the agent to to live nodes that are blue
      * or yellow and do not already have an agent.
      */
-    public synchronized void sendCloneAgent(){
-        //System.out.println(liveNeighbors);
-        for (Node n : liveNeighbors) {
+    public void sendCloneAgent(){
+        System.out.println("$#$$#$  "+id);
+        LinkedList<Node> tempLiveNeighbors = new LinkedList<>(liveNeighbors);
+        for (Node n : tempLiveNeighbors) {
             if (n.state.equals(Status.BLUE) || n.state.equals(Status.YELLOW)
                     && n.agent == null) {
+                System.out.println(id+">>>"+n.id);
                 Agent clone = new Agent(n,false);
-                System.out.println("sent clone");
                 boolean returedVal = n.recieveClone(clone);
                 if(!returedVal){
                     clone.stop();
@@ -155,8 +157,9 @@ public class Node extends Thread{
     }
 
     public synchronized boolean recieveClone(Agent clone){
+        System.out.println(">>>"+id);
         if(agent==null){
-            System.out.println("received clone");
+            System.out.println(id);
             agent=clone;
             makeAndSendAgentID();
             markNode();
@@ -169,18 +172,16 @@ public class Node extends Thread{
 
     public synchronized void scream(){
         unmarkNode();
-        for(Node node: liveNeighbors){
+        LinkedList<Node> tempLiveNeighbors = new LinkedList<>(liveNeighbors);
+        for(Node node: tempLiveNeighbors){
             node.neigborStausChanged(this);
         }
     }
     private synchronized void neigborStausChanged(Node caller){
         if(this.getStatus().equals(Status.BLUE)) {
-            //System.out.println("Screammmm>>>"+this);
+            liveNeighbors.remove(caller);
             this.setState(Status.YELLOW);
             burner = new StatusChecker(this);
-            //System.out.println(liveNeighbors);
-            liveNeighbors.remove(caller);
-            //System.out.println(liveNeighbors);
         }
     }
 
