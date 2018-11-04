@@ -140,7 +140,8 @@ public class Node extends Thread{
      * or yellow and do not already have an agent.
      */
     public void sendCloneAgent(){
-        for (Node n : liveNeighbors) {
+        LinkedList<Node> tempLiveNeighbors = new LinkedList<>(liveNeighbors);
+        for (Node n : tempLiveNeighbors) {
             if (n.state.equals(Status.BLUE) || n.state.equals(Status.YELLOW)
                     && n.agent == null) {
                 Agent clone = new Agent(n,false);
@@ -164,7 +165,8 @@ public class Node extends Thread{
 
     public void scream(){
         unmarkNode();
-        for(Node node: liveNeighbors){
+        LinkedList<Node> tempLiveNeighbors = new LinkedList<>(liveNeighbors);
+        for(Node node: tempLiveNeighbors){
             node.neigborStausChanged(this);
         }
     }
