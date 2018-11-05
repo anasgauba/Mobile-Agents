@@ -66,6 +66,7 @@ public class Node extends Thread{
         return burner;
     }
     public synchronized void setState(Status status){
+        System.out.println("Im red:"+id);
         if(status.equals(Status.RED)){
             circle.setFill(Paint.valueOf("red"));
             if(agent!=null){
