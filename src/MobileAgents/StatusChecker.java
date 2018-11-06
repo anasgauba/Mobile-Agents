@@ -14,7 +14,7 @@ public class StatusChecker extends Thread {
             node.setState(Status.RED);
             node.scream();
             node.stop();
-            stop();
+            //stop();
         }
         catch(Exception e){
             System.out.println(e);

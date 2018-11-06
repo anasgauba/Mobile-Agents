@@ -33,7 +33,7 @@ public class Node extends Thread{
         this.liveNeighbors = new LinkedList<>();
         this.state = state;
         queue = new LinkedBlockingQueue<LinkedList<Object>>();
-        start();
+        //start();
     }
 
     /**
@@ -66,12 +66,12 @@ public class Node extends Thread{
         return burner;
     }
     public synchronized void setState(Status status){
-        System.out.println("Im red:"+id);
         if(status.equals(Status.RED)){
             circle.setFill(Paint.valueOf("red"));
-            if(agent!=null){
-                agent.kill();
-            }
+            System.out.println(x+"  "+y);
+            //if(agent!=null){
+            //    agent.kill();
+            //}
         }
         else if(status.equals(Status.YELLOW)){
             circle.setFill(Paint.valueOf("yellow"));
@@ -128,7 +128,6 @@ public class Node extends Thread{
         return false;
     }
     private synchronized void markNode(){
-
         circle.setStroke(Paint.valueOf("purple"));
         circle.setStrokeWidth(3);
         //circle.setStyle("-fx-border-color: purple; -fx-border-width: 10");

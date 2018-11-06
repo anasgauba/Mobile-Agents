@@ -32,7 +32,8 @@ public class Agent extends Thread {
         }
         while(!killed){
             if(!cloned && currentNode.getStatus().equals(Status.YELLOW)){
-                /*int threadCount = 0;
+                /*System.out.println("**************************************");
+                int threadCount = 0;
                 Set<Thread> threadSet = Thread.getAllStackTraces().keySet();
                 for ( Thread t : threadSet){
                     if ( t.getThreadGroup() == Thread.currentThread().getThreadGroup()){
