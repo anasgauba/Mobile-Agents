@@ -67,16 +67,19 @@ public class Node extends Thread{
     }
     public synchronized void setState(Status status){
         if(status.equals(Status.RED)){
-            circle.setFill(Paint.valueOf("red"));
+            paint("red");
+            //circle.setFill(Paint.valueOf("red"));
             System.out.println(x+"  "+y);
-            //if(agent!=null){
-            //    agent.kill();
-            //}
         }
         else if(status.equals(Status.YELLOW)){
-            circle.setFill(Paint.valueOf("yellow"));
+            paint("yellow");
+            //circle.setFill(Paint.valueOf("yellow"));
         }
         state=status;
+    }
+    private void paint(String color){
+        System.out.println("circle=====> "+circle);
+        circle.setFill(Paint.valueOf(color));
     }
     /**
      * This function will pass the agent to a RANDOM neighbor
