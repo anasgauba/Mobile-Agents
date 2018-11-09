@@ -109,15 +109,13 @@ public class Node extends Observable implements Runnable{
     }
     public synchronized void setState(Status status){
         if(status.equals(Status.RED)){
-            setChanged();
-            notifyObservers("red");
+            updateScreen("red");
             //paint("red");
             //circle.setFill(Paint.valueOf("red"));
             //System.out.println(x+"  "+y);
         }
         else if(status.equals(Status.YELLOW)){
-            setChanged();
-            notifyObservers("yellow");
+            updateScreen("yellow");
             //paint("yellow");
             //circle.setFill(Paint.valueOf("yellow"));
         }
@@ -139,7 +137,7 @@ public class Node extends Observable implements Runnable{
             stat = node.recieveAgent(agent);
         }
         agent = null;
-        unmarkNode();
+        updateScreen("removeBorder");
         return node;
     }
     public void setID(int id){
@@ -167,21 +165,25 @@ public class Node extends Observable implements Runnable{
     public synchronized boolean recieveAgent(Agent agent){
         if(this.agent==null) {
             this.agent = agent;
-            markNode();
+            updateScreen("border");
             return true;
         }
         return false;
     }
-    private synchronized void markNode(){
+            /*private synchronized void markNode(){
+                setChanged();
+                notifyObservers("border");
+                //circle.setStroke(Paint.valueOf("purple"));
+                //circle.setStrokeWidth(3);
+            }
+            private synchronized void unmarkNode(){
+                setChanged();
+                notifyObservers("removeBorder");
+                //circle.setStroke(null);
+            }*/
+    private synchronized void updateScreen(String arg){
         setChanged();
-        notifyObservers("border");
-        //circle.setStroke(Paint.valueOf("purple"));
-        //circle.setStrokeWidth(3);
-    }
-    private synchronized void unmarkNode(){
-        setChanged();
-        notifyObservers("removeBorder");
-        //circle.setStroke(null);
+        notifyObservers(arg);
     }
     /**
      * It clones and sends the clone of the agent to to live nodes that are blue
@@ -206,7 +208,7 @@ public class Node extends Observable implements Runnable{
             System.out.println("Received>>>"+this.getX()+","+this.getY());
             agent=clone;
             makeAndSendAgentID();
-            markNode();
+            updateScreen("border");
             return true;
         }
         else{
@@ -215,7 +217,7 @@ public class Node extends Observable implements Runnable{
     }
 
     public void scream(){
-        unmarkNode();
+        updateScreen("removeBorder");
         LinkedList<Node> tempLiveNeighbors = new LinkedList<>(liveNeighbors);
         for(Node node: tempLiveNeighbors){
             node.neigborStausChanged(this);
