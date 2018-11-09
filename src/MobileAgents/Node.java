@@ -79,10 +79,12 @@ public class Node extends Observable implements Runnable{
         while(!killed) {
             try {
                 LinkedList<Object> list = queue.take();
-                if (list.get(3) == null) {
-                    passIDFromQueue((int) list.get(0), (int) list.get(1), (int) list.get(2), (LinkedList<Node>) list.get(4), (LinkedList<Node>) list.get(5));
-                } else {
-                    returnIDFromQueue((int) list.get(0), (int) list.get(1), (int) list.get(2), (boolean) list.get(3), (LinkedList<Node>) list.get(4), (LinkedList<Node>) list.get(5));
+                if(list.size()!=0) {
+                    if (list.get(3) == null) {
+                        passIDFromQueue((int) list.get(0), (int) list.get(1), (int) list.get(2), (LinkedList<Node>) list.get(4), (LinkedList<Node>) list.get(5));
+                    } else {
+                        returnIDFromQueue((int) list.get(0), (int) list.get(1), (int) list.get(2), (boolean) list.get(3), (LinkedList<Node>) list.get(4), (LinkedList<Node>) list.get(5));
+                    }
                 }
             } catch (Exception e) {
                 System.out.println("Exited");
@@ -93,7 +95,10 @@ public class Node extends Observable implements Runnable{
     public void kill(){
         System.out.println("KKKKKKKKKIIIIIIIIIIIIIIIIIIIIIKLLLLLLLLLLLLLLLLLLLLL");
         agent.kill();
-        killed=true;
+        //killed=true;
+        LinkedList<Object> list = new LinkedList<>();
+        //System.out.println(list);
+        queue.add(list);
     }
     public synchronized Status getStatus(){
         return state;
@@ -189,7 +194,7 @@ public class Node extends Observable implements Runnable{
         LinkedList<Node> tempLiveNeighbors = new LinkedList<>(liveNeighbors);
         for (Node n : tempLiveNeighbors) {
             if ((n.getStatus().equals(Status.BLUE) || n.getStatus().equals(Status.YELLOW))
-                    && n.getStatus() == null) {
+                    && n.agent == null) {
                 Agent clone = new Agent(n,false);
                 n.recieveClone(clone);
             }
@@ -289,7 +294,7 @@ public class Node extends Observable implements Runnable{
         nextNode.passID(id,x,y,path,returnPath);
     }
     public synchronized void returnID(int id, int x, int y,boolean status, LinkedList<Node> path,LinkedList<Node> returnPath){
-        System.out.println(status);
+        System.out.println("=====>"+status);
         LinkedList<Object> list = new LinkedList<>();
         list.addLast(id);
         list.addLast(x);
