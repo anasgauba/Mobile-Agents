@@ -108,6 +108,7 @@ public class Node extends Observable implements Runnable{
         return burner;
     }
     public synchronized void setState(Status status){
+        state=status;
         if(status.equals(Status.RED)){
             updateScreen("red");
             //paint("red");
@@ -115,11 +116,11 @@ public class Node extends Observable implements Runnable{
             //System.out.println(x+"  "+y);
         }
         else if(status.equals(Status.YELLOW)){
+            System.out.println("]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]"+getX()+"---"+getY());
             updateScreen("yellow");
             //paint("yellow");
             //circle.setFill(Paint.valueOf("yellow"));
         }
-        state=status;
     }
     /**
      * This function will pass the agent to a RANDOM neighbor
