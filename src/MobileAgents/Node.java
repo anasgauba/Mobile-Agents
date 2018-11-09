@@ -193,7 +193,9 @@ public class Node extends Observable implements Runnable{
                     && n.agent == null) {
                 Agent clone = new Agent(n,false);
                 boolean b = n.recieveClone(clone);
-                System.out.println(">>>>>>>>>>>>>>>>>__>>>++>>===>>>---->>>"+b);
+                if(!b){
+                    clone.kill();
+                }
             }
         }
     }
