@@ -188,7 +188,7 @@ public class Node extends Observable implements Runnable{
     public void sendCloneAgent(){
         LinkedList<Node> tempLiveNeighbors = new LinkedList<>(liveNeighbors);
         for (Node n : tempLiveNeighbors) {
-            if (n.state.equals(Status.BLUE) || n.state.equals(Status.YELLOW)
+            if ((n.state.equals(Status.BLUE) || n.state.equals(Status.YELLOW))
                     && n.agent == null) {
                 Agent clone = new Agent(n,false);
                 n.recieveClone(clone);
