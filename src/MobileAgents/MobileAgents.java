@@ -182,8 +182,8 @@ public class MobileAgents extends Application implements Observer {
 
     @Override
     public synchronized void update(Observable o, Object arg) {
-        //System.out.println("arg");
         Node node = (Node)o;
+        System.out.println(arg+"\\\\\\\\\\\\\\\\\\alfjhjfkasf.s"+node.getX()+"   "+node.getY());
         Circle circle = map.get(node);
         if(arg.equals("red")){
             circle.setFill(Paint.valueOf("red"));
