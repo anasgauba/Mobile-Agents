@@ -95,7 +95,7 @@ public class Node extends Observable implements Runnable{
     public void kill(){
         System.out.println("KKKKKKKKKIIIIIIIIIIIIIIIIIIIIIKLLLLLLLLLLLLLLLLLLLLL");
         agent.kill();
-        //killed=true;
+        killed=true;
         LinkedList<Object> list = new LinkedList<>();
         //System.out.println(list);
         queue.add(list);
