@@ -168,7 +168,6 @@ public class MobileAgents extends Application implements Observer {
 
         for(Node n:map.keySet()){
             n.addObserver(this);
-            System.out.println(".knsdndskgnsdakfnasfsanfas.kfnsa.kfnsa.fkasfnasfnasfn");
         }
 
         if(baseStation!=null && onFire!=null) {

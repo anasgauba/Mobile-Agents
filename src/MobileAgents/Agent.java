@@ -16,7 +16,7 @@ public class Agent extends Thread {
 //        this.killed = false;
         start();
     }
-    public void kill(){
+    public synchronized void kill(){
         queue.add(true);
         killed=true;
     }
