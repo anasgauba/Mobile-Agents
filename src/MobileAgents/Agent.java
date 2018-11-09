@@ -36,15 +36,6 @@ public class Agent extends Thread {
         }
         while(!killed){
             if(!cloned && currentNode.getStatus().equals(Status.YELLOW)){
-                /*System.out.println("**************************************");
-                int threadCount = 0;
-                Set<Thread> threadSet = Thread.getAllStackTraces().keySet();
-                for ( Thread t : threadSet){
-                    if ( t.getThreadGroup() == Thread.currentThread().getThreadGroup()){
-                        System.out.println("Thread :"+t.getClass()+":"+"state:"+t.getState());
-                        ++threadCount;
-                    }
-                }*/
                 currentNode.sendCloneAgent();
                 cloned=true;
             }

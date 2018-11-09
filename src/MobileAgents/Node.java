@@ -91,6 +91,7 @@ public class Node extends Observable implements Runnable{
                 killed=true;
             }
         }
+        System.out.println("I DIEEEEDDDDDDDDDDDDDD TOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
     }
     public void kill(){
         System.out.println("KKKKKKKKKIIIIIIIIIIIIIIIIIIIIIKLLLLLLLLLLLLLLLLLLLLL");
@@ -274,7 +275,7 @@ public class Node extends Observable implements Runnable{
         //System.out.println(list);
         queue.add(list);
     }
-    public synchronized void passIDFromQueue(int id, int x, int y, LinkedList<Node> path, LinkedList<Node> returnPath){
+    public void passIDFromQueue(int id, int x, int y, LinkedList<Node> path, LinkedList<Node> returnPath){
         //System.out.println(">>>"+this);
         if(path.size()==0){
             path.addFirst(this);
@@ -303,7 +304,7 @@ public class Node extends Observable implements Runnable{
         list.addLast(returnPath);
         queue.add(list);
     }
-    public synchronized void returnIDFromQueue (int id, int x, int y,boolean status, LinkedList<Node> path,LinkedList<Node> returnPath){
+    public void returnIDFromQueue (int id, int x, int y,boolean status, LinkedList<Node> path,LinkedList<Node> returnPath){
         //System.out.println(returnPath);
         //System.out.println(this);
         if(!status) {
