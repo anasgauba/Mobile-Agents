@@ -87,7 +87,7 @@ public class Node extends Observable implements Runnable{
                     }
                 }
             } catch (Exception e) {
-                System.out.println("Exited");
+                System.out.println(e);
                 killed=true;
             }
         }
@@ -122,10 +122,6 @@ public class Node extends Observable implements Runnable{
         }
         state=status;
     }
-/*    private void paint(String color){
-        System.out.println("circle=====> "+circle);
-        circle.setFill(Paint.valueOf(color));
-    }*/
     /**
      * This function will pass the agent to a RANDOM neighbor
      * (which doesn't have an agent already) and set the agent to null (Not
@@ -196,7 +192,8 @@ public class Node extends Observable implements Runnable{
             if ((n.getStatus().equals(Status.BLUE) || n.getStatus().equals(Status.YELLOW))
                     && n.agent == null) {
                 Agent clone = new Agent(n,false);
-                n.recieveClone(clone);
+                boolean b = n.recieveClone(clone);
+                System.out.println(">>>>>>>>>>>>>>>>>__>>>++>>===>>>---->>>"+b);
             }
         }
     }
