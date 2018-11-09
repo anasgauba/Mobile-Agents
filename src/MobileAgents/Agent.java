@@ -1,12 +1,15 @@
 package MobileAgents;
 
 import java.util.Set;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class Agent extends Thread {
     private Node currentNode;
     private boolean tasks;
     private boolean killed=false;
     private boolean cloned = false;
+    private BlockingQueue<Boolean> queue = new LinkedBlockingQueue<>();
     public Agent(Node node, boolean task) {
         this.currentNode = node;
         this.tasks = task;
@@ -14,6 +17,7 @@ public class Agent extends Thread {
         start();
     }
     public void kill(){
+        queue.add(true);
         killed=true;
     }
 /*    public void updateCurrentNode(Node node){
@@ -46,7 +50,8 @@ public class Agent extends Thread {
             }
             else if(cloned && currentNode.getBurner()!=null){
                 try {
-                    currentNode.getBurner().join();
+                    boolean b = queue.take();
+                    System.out.println(">>>>>>>>>>>>>>>>>>>>>"+b);
                     killed=true;
                 }
                 catch (Exception e){

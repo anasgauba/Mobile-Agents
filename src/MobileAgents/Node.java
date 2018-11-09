@@ -1,16 +1,43 @@
 package MobileAgents;
 
+import javafx.application.Platform;
 import javafx.geometry.Point2D;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 
 import java.util.LinkedList;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.Random;
 import java.util.concurrent.BlockingDeque;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-public class Node extends Thread{
+//public class Node extends Thread{
+public class Node extends Observable implements Runnable{
+
+    private class StatusChecker extends Thread {
+        private boolean dead = false;
+        private Node node ;
+        public StatusChecker(Node node){
+            this.node=node;
+            start();
+        }
+        @Override
+        public void run(){
+            try {
+                sleep(3000);
+                node.setState(Status.RED);
+                node.scream();
+                node.kill();
+                //stop();
+            }
+            catch(Exception e){
+                System.out.println(e);
+            }
+        }
+    }
+
     private LinkedList<LinkedList<Node>> pathsToBaseStation;
     protected LinkedList<Node> neighbors;
     protected LinkedList<Node> liveNeighbors;
@@ -24,6 +51,8 @@ public class Node extends Thread{
     private BlockingQueue<LinkedList<Object>> queue;
     private StatusChecker burner=null;
 
+
+
     public Node(Status state, int x, int y, Circle circle){
         this.circle=circle;
         this.x=x;
@@ -33,6 +62,8 @@ public class Node extends Thread{
         this.liveNeighbors = new LinkedList<>();
         this.state = state;
         queue = new LinkedBlockingQueue<LinkedList<Object>>();
+        Thread thread = new Thread(this);
+        thread.start();
         //start();
     }
 
@@ -58,7 +89,10 @@ public class Node extends Thread{
             }
         }
     }
-
+    public void kill(){
+        agent.kill();
+        killed=true;
+    }
     public synchronized Status getStatus(){
         return state;
     }
@@ -67,20 +101,24 @@ public class Node extends Thread{
     }
     public synchronized void setState(Status status){
         if(status.equals(Status.RED)){
-            paint("red");
+            setChanged();
+            notifyObservers("red");
+            //paint("red");
             //circle.setFill(Paint.valueOf("red"));
-            System.out.println(x+"  "+y);
+            //System.out.println(x+"  "+y);
         }
         else if(status.equals(Status.YELLOW)){
-            paint("yellow");
+            setChanged();
+            notifyObservers("yellow");
+            //paint("yellow");
             //circle.setFill(Paint.valueOf("yellow"));
         }
         state=status;
     }
-    private void paint(String color){
+/*    private void paint(String color){
         System.out.println("circle=====> "+circle);
         circle.setFill(Paint.valueOf(color));
-    }
+    }*/
     /**
      * This function will pass the agent to a RANDOM neighbor
      * (which doesn't have an agent already) and set the agent to null (Not
@@ -131,12 +169,15 @@ public class Node extends Thread{
         return false;
     }
     private synchronized void markNode(){
-        circle.setStroke(Paint.valueOf("purple"));
-        circle.setStrokeWidth(3);
-        //circle.setStyle("-fx-border-color: purple; -fx-border-width: 10");
+        setChanged();
+        notifyObservers("border");
+        //circle.setStroke(Paint.valueOf("purple"));
+        //circle.setStrokeWidth(3);
     }
     private synchronized void unmarkNode(){
-        circle.setStroke(null);
+        setChanged();
+        notifyObservers("removeBorder");
+        //circle.setStroke(null);
     }
     /**
      * It clones and sends the clone of the agent to to live nodes that are blue
@@ -264,7 +305,6 @@ public class Node extends Thread{
         }
         if (returnPath.size()==0) {
             if(!status){
-                System.out.println(this.liveNeighbors);
                 sendID(id,x,y);
             }
         }

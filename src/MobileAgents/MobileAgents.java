@@ -14,11 +14,10 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Scanner;
+import java.util.*;
 
-public class MobileAgents extends Application {
+public class MobileAgents extends Application implements Observer {
+    private Map<Node,Circle> map = new HashMap<>();
     /**
      * This reads the config file and creates the node objects.
      * It also creates the display elements. The display consists of circles as nodes
@@ -69,6 +68,7 @@ public class MobileAgents extends Application {
                 circle.setFill(Paint.valueOf("blue"));
                 Node node = new Node(Status.BLUE, node1X, node1Y, circle);
                 node.setID(id);
+                map.put(node,circle);
                 id++;
                 //root.getChildren().add(circle);
                 circles.add(circle);
@@ -83,13 +83,18 @@ public class MobileAgents extends Application {
                 circle.setFill(Paint.valueOf("green"));
                 BaseStation node = new BaseStation(Status.BLUE, node1X, node1Y, circle);
                 //root.getChildren().add(circle);
+                node.setID(id);
+                map.put(node,circle);
+                id++;
                 circles.add(circle);
                 baseStation = node;
                 //nodes.add(node);
+
                 LinkedList<Node> temp = new LinkedList<>(nodes);
                 for (Node n : temp) {
                     if (n.getX() == node1X && n.getY() == node1Y) {
                         nodes.remove(n);
+                        map.remove(n);
                     }
                 }
             }
@@ -116,12 +121,13 @@ public class MobileAgents extends Application {
                         n2 = n;
                     }
                 }
-                if (baseStation.getX() == node1X && baseStation.getY() == node1Y) {
-                    n1 = baseStation;
-                }
-                else if (baseStation.getX() == node2X && baseStation.getY()
-                        == node2Y) {
-                    n2 = baseStation;
+                if(baseStation!=null) {
+                    if (baseStation.getX() == node1X && baseStation.getY() == node1Y) {
+                        n1 = baseStation;
+                    } else if (baseStation.getX() == node2X && baseStation.getY()
+                            == node2Y) {
+                        n2 = baseStation;
+                    }
                 }
                 if (n1 != null && n2 != null) {
                     n1.addNeighbor(n2);
@@ -160,11 +166,38 @@ public class MobileAgents extends Application {
         //Node node = nodes.get(3);
         //node.sendID(public1,node.getX(),node.getY());
 
-        baseStation.findPaths();
-        onFire.setState(Status.RED);
-        onFire.scream();
-        baseStation.recieveAgent(new Agent(baseStation,true));
+        for(Node n:map.keySet()){
+            n.addObserver(this);
+            System.out.println(".knsdndskgnsdakfnasfsanfas.kfnsa.kfnsa.fkasfnasfnasfn");
+        }
 
+        if(baseStation!=null && onFire!=null) {
+            baseStation.findPaths();
+            onFire.setState(Status.RED);
+            onFire.scream();
+            baseStation.recieveAgent(new Agent(baseStation, true));
+        }
+        System.out.println("Terminateeeerereerevlsjdhsdjglsd");
+
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        Node node = (Node)o;
+        Circle circle = map.get(node);
+        if(arg.equals("red")){
+            circle.setFill(Paint.valueOf("red"));
+        }
+        else if(arg.equals("yellow")){
+            circle.setFill(Paint.valueOf("yellow"));
+        }
+        else if(arg.equals("border")){
+            circle.setStroke(Paint.valueOf("purple"));
+            circle.setStrokeWidth(3);
+        }
+        else if(arg.equals("removeBorder")){
+            circle.setStroke(null);
+        }
     }
 
 //    public MobileAgents(String file){

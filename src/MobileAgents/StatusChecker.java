@@ -1,5 +1,5 @@
 package MobileAgents;
-
+/*
 public class StatusChecker extends Thread {
     private boolean dead = false;
     private Node node ;
@@ -13,11 +13,10 @@ public class StatusChecker extends Thread {
             sleep(3000);
             node.setState(Status.RED);
             node.scream();
-            node.stop();
-            //stop();
+            node.kill();
         }
         catch(Exception e){
             System.out.println(e);
         }
     }
-}
+}*/
