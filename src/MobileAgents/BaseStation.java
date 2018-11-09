@@ -7,8 +7,8 @@ import java.util.LinkedList;
 public class BaseStation extends Node{
 
     private LinkedList<LinkedList<Object>> agents = new LinkedList<>();
-    public BaseStation(Status state,int x, int y, Circle circle){
-        super(state,x,y,circle);
+    public BaseStation(Status state,int x, int y){
+        super(state,x,y);
     }
 
     public void findPaths(){

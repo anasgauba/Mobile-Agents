@@ -46,7 +46,7 @@ public class Node extends Observable implements Runnable{
     private Agent agent;
     protected int x;
     protected int y;
-    protected Circle circle;
+    //protected Circle circle;
     private int id;
     private boolean killed = false;
     private BlockingQueue<LinkedList<Object>> queue;
@@ -54,8 +54,8 @@ public class Node extends Observable implements Runnable{
 
 
 
-    public Node(Status state, int x, int y, Circle circle){
-        this.circle=circle;
+    public Node(Status state, int x, int y){
+        //this.circle=circle;
         this.x=x;
         this.y=y;
         pathsToBaseStation = new LinkedList<>();
@@ -225,6 +225,7 @@ public class Node extends Observable implements Runnable{
     }
     private synchronized void neigborStausChanged(Node caller){
         if(this.getStatus().equals(Status.BLUE)) {
+            System.out.println("###########################>>>>"+getX()+"***"+getY());
             this.setState(Status.YELLOW);
             burner = new StatusChecker(this);
             //System.out.println(agent);

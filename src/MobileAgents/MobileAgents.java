@@ -66,7 +66,7 @@ public class MobileAgents extends Application implements Observer {
                 node1YPixel = (50 * node1Y) + 100;
                 circle = new Circle(node1XPixel, node1YPixel, 10);
                 circle.setFill(Paint.valueOf("blue"));
-                Node node = new Node(Status.BLUE, node1X, node1Y, circle);
+                Node node = new Node(Status.BLUE, node1X, node1Y);
                 node.setID(id);
                 map.put(node,circle);
                 id++;
@@ -81,7 +81,7 @@ public class MobileAgents extends Application implements Observer {
                 node1YPixel = (50 * node1Y) + 100;
                 circle = new Circle(node1XPixel, node1YPixel, 10);
                 circle.setFill(Paint.valueOf("green"));
-                BaseStation node = new BaseStation(Status.BLUE, node1X, node1Y, circle);
+                BaseStation node = new BaseStation(Status.BLUE, node1X, node1Y);
                 //root.getChildren().add(circle);
                 node.setID(id);
                 map.put(node,circle);
