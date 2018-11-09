@@ -27,9 +27,10 @@ public class Node extends Observable implements Runnable{
         public void run(){
             try {
                 sleep(3000);
-                node.setState(Status.RED);
                 node.scream();
                 node.kill();
+                node.setState(Status.RED);
+
                 //stop();
             }
             catch(Exception e){
@@ -90,6 +91,7 @@ public class Node extends Observable implements Runnable{
         }
     }
     public void kill(){
+        System.out.println("KKKKKKKKKIIIIIIIIIIIIIIIIIIIIIKLLLLLLLLLLLLLLLLLLLLL");
         agent.kill();
         killed=true;
     }

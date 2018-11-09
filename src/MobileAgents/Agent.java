@@ -52,6 +52,7 @@ public class Agent extends Thread {
                 try {
                     boolean b = queue.take();
                     System.out.println(">>>>>>>>>>>>>>>>>>>>>"+b);
+                    //stop();
                     killed=true;
                 }
                 catch (Exception e){
