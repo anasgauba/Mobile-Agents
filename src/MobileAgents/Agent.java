@@ -4,12 +4,21 @@ import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
+/**
+ * This is the agent class that at first will find a yellow node, then it clones itself on yellow nodes and on their blue neighbors.
+ */
 public class Agent extends Thread {
     private Node currentNode;
     private boolean tasks;
     private boolean killed=false;
     private boolean cloned = false;
     private BlockingQueue<Boolean> queue = new LinkedBlockingQueue<>();
+
+    /**
+     * This is the constructor that creates the agent with the knowledge
+     * @param node
+     * @param task
+     */
     public Agent(Node node, boolean task) {
         this.currentNode = node;
         this.tasks = task;

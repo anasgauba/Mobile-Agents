@@ -11,16 +11,12 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.util.*;
 
+/**
+ * This is the class that creates the graph and starts the program. It is also in charge of display.
+ */
 public class MobileAgents extends Application implements Observer {
     private Map<Node,Circle> map = new HashMap<>();
-    /**
-     * This reads the config file and creates the node objects.
-     * It also creates the display elements. The display consists of circles as nodes
-     * in x,y of config file. The edges are lines from x1,y1 to x2,y2.
-     * IMPORTANT NOTE: The circle objects which are nodes should be passed to node objects when they are being created.
-     * The size of canvas is: width=MAX(c*x)+20 ans height=MAX(c*y)+20. where c is a constant.
-     * @param args
-     */
+
     public static void main(String [] args){
         launch(args);
     }
@@ -28,7 +24,17 @@ public class MobileAgents extends Application implements Observer {
     public void stop(){
         System.exit(0);
     }
-
+    /**
+     * This reads the config file and creates the node objects.
+     * It also creates the display elements. The display consists of circles as nodes
+     * in x,y of config file. The edges are lines from x1,y1 to x2,y2.
+     * IMPORTANT NOTE: The circle objects which are nodes should be passed to node objects when they are being created.
+     * The size of canvas is: width=MAX(c*x)+20 ans height=MAX(c*y)+20. where c is a constant.
+     * The graph is formed by detecting and adding the edges to the neighbors of the nodes.
+     * At the end we add an agent to the basestation and the program is started. At the end, it will trminate, because
+     * now other threads are doing everything.
+     * @param args
+     */
     @Override
     public void start(Stage primaryStage) throws Exception {
         Pane root = new Pane();
@@ -170,6 +176,14 @@ public class MobileAgents extends Application implements Observer {
 
     }
 
+    /**
+     * This function is invoked whenever the notifyObserver is called and it is a part of the observer pattern.
+     * This function is called whenever we are trying to change the state of our display. It gets a string which
+     * gives it the information regarding what changes should be made. Then it makes those changes to the circle
+     * object of that node.
+     * @param o
+     * @param arg
+     */
     @Override
     public synchronized void update(Observable o, Object arg) {
         Node node = (Node)o;
