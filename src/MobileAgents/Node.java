@@ -320,12 +320,15 @@ public class Node extends Observable implements Runnable{
     public synchronized void sendID(int id, int x, int y){
         LinkedList<Node> returnPath = new LinkedList<Node>();
         returnPath.add(this);
-        LinkedList<Node> path = pathsToBaseStation.getFirst();
+        LinkedList<Node> path = pathsToBaseStation.peekFirst();
+        if(path==null){return;}
         Node nextNode = path.getFirst();
         while(!liveNeighbors.contains(nextNode)){
-            pathsToBaseStation.removeFirst();
+            LinkedList<Node> pollResult = pathsToBaseStation.pollFirst();
+            if(pollResult==null){return;}
             if(pathsToBaseStation.size()>=1) {
-                path = pathsToBaseStation.getFirst();
+                path = pathsToBaseStation.peekFirst();
+                if(path==null){return;}
                 nextNode = path.getFirst();
             }
         }
