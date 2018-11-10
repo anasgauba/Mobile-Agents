@@ -25,7 +25,6 @@ public class Node extends Observable implements Runnable{
                 node.kill();
                 node.setState(Status.RED);
 
-                //stop();
             }
             catch(Exception e){
                 System.out.println(e);
@@ -40,7 +39,6 @@ public class Node extends Observable implements Runnable{
     private Agent agent;
     protected int x;
     protected int y;
-    //protected Circle circle;
     protected int id;
     private boolean killed = false;
     private BlockingQueue<LinkedList<Object>> queue;
@@ -49,7 +47,6 @@ public class Node extends Observable implements Runnable{
 
 
     public Node(Status state, int x, int y){
-        //this.circle=circle;
         this.x=x;
         this.y=y;
         pathsToBaseStation = new LinkedList<>();
@@ -59,7 +56,6 @@ public class Node extends Observable implements Runnable{
         queue = new LinkedBlockingQueue<LinkedList<Object>>();
         Thread thread = new Thread(this);
         thread.start();
-        //start();
     }
 
     /**
@@ -75,9 +71,11 @@ public class Node extends Observable implements Runnable{
                 LinkedList<Object> list = queue.take();
                 if(list.size()!=0) {
                     if (list.get(3) == null) {
-                        passIDFromQueue((int) list.get(0), (int) list.get(1), (int) list.get(2), (LinkedList<Node>) list.get(4), (LinkedList<Node>) list.get(5));
+                        passIDFromQueue((int) list.get(0), (int) list.get(1), (int) list.get(2)
+                                , (LinkedList<Node>) list.get(4), (LinkedList<Node>) list.get(5));
                     } else {
-                        returnIDFromQueue((int) list.get(0), (int) list.get(1), (int) list.get(2), (boolean) list.get(3), (LinkedList<Node>) list.get(4), (LinkedList<Node>) list.get(5));
+                        returnIDFromQueue((int) list.get(0), (int) list.get(1), (int) list.get(2)
+                                , (boolean) list.get(3), (LinkedList<Node>) list.get(4), (LinkedList<Node>) list.get(5));
                     }
                 }
             } catch (Exception e) {
@@ -237,7 +235,8 @@ public class Node extends Observable implements Runnable{
         path.removeFirst();
         nextNode.passID(id,x,y,path,returnPath);
     }
-    public synchronized void passID(int id, int x, int y, LinkedList<Node> path, LinkedList<Node> returnPath){
+    public synchronized void passID(int id, int x, int y
+            , LinkedList<Node> path, LinkedList<Node> returnPath){
         LinkedList<Object> list = new LinkedList<>();
         list.addLast(id);
         list.addLast(x);
@@ -248,7 +247,8 @@ public class Node extends Observable implements Runnable{
         //System.out.println(list);
         queue.add(list);
     }
-    public void passIDFromQueue(int id, int x, int y, LinkedList<Node> path, LinkedList<Node> returnPath){
+    public void passIDFromQueue(int id, int x, int y
+            , LinkedList<Node> path, LinkedList<Node> returnPath){
         if(path.size()==0){
             path.addFirst(this);
             Node node = returnPath.removeFirst();
@@ -265,7 +265,8 @@ public class Node extends Observable implements Runnable{
         returnPath.addFirst(this);
         nextNode.passID(id,x,y,path,returnPath);
     }
-    public synchronized void returnID(int id, int x, int y,boolean status, LinkedList<Node> path,LinkedList<Node> returnPath){
+    public synchronized void returnID(int id, int x, int y
+            ,boolean status, LinkedList<Node> path,LinkedList<Node> returnPath){
         LinkedList<Object> list = new LinkedList<>();
         list.addLast(id);
         list.addLast(x);
@@ -275,7 +276,8 @@ public class Node extends Observable implements Runnable{
         list.addLast(returnPath);
         queue.add(list);
     }
-    public void returnIDFromQueue (int id, int x, int y,boolean status, LinkedList<Node> path,LinkedList<Node> returnPath){
+    public void returnIDFromQueue (int id, int x, int y
+            ,boolean status, LinkedList<Node> path,LinkedList<Node> returnPath){
         if(!status) {
             pathsToBaseStation.remove(path);
         }

@@ -20,7 +20,8 @@ public class BaseStation extends Node{
      * This function will store the returned id and location of the agents
      */
     @Override
-    public synchronized void passID(int id, int x, int y, LinkedList<Node> path, LinkedList<Node> returnPath){
+    public synchronized void passID(int id, int x, int y
+            , LinkedList<Node> path, LinkedList<Node> returnPath){
         LinkedList<Integer> agent = new LinkedList<>();
         agent.addLast(id);
         agent.addLast(x);

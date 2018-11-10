@@ -10,8 +10,7 @@ The green node is basestation. The blue nodes are the normal nodes. The yellow n
 The red nodes are the ones that are on fire. The purple border on the nodes is the agent.
 
 Wo did which part?
-It is hard to explain this because many of the functions where done with both of use working together on them,
-so each function is nut necessarily written by one of us. The functions written by both of use are:
+It is hard to explain this because many of the functions were created with the contribution from both of us. The functions written by both of use are:
 In BaseStation:
 start()
 Agent()

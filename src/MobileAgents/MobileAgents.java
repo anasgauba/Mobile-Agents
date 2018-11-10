@@ -33,7 +33,6 @@ public class MobileAgents extends Application implements Observer {
      * The graph is formed by detecting and adding the edges to the neighbors of the nodes.
      * At the end we add an agent to the basestation and the program is started. At the end, it will trminate, because
      * now other threads are doing everything.
-     * @param args
      */
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -62,7 +61,8 @@ public class MobileAgents extends Application implements Observer {
             if (x.equals("node")) {
                 node1X = scanIn.nextInt();
                 node1Y = scanIn.nextInt();
-                if (baseStation != null && baseStation.getX() == node1X && baseStation.getY() == node1Y) {
+                if (baseStation != null && baseStation.getX() == node1X
+                        && baseStation.getY() == node1Y) {
                     continue;
                 }
                 node1XPixel = (50 * node1X) + 100;
