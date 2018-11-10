@@ -53,6 +53,8 @@ public class MobileAgents extends Application implements Observer {
         double node1YPixel;
         double node2XPixel;
         double node2YPixel;
+        double xMax = 0;
+        double yMax = 0;
         Circle circle;
         Line edge;
         Node onFire=null;
@@ -75,6 +77,12 @@ public class MobileAgents extends Application implements Observer {
                 }
                 node1XPixel = (50 * node1X) + 100;
                 node1YPixel = (50 * node1Y) + 100;
+                if(node1XPixel>xMax){
+                    xMax=node1XPixel;
+                }
+                if(node1YPixel>yMax){
+                    yMax=node1YPixel;
+                }
                 circle = new Circle(node1XPixel, node1YPixel, 10);
                 circle.setFill(Paint.valueOf("blue"));
                 Node node = new Node(Status.BLUE, node1X, node1Y);
@@ -166,7 +174,7 @@ public class MobileAgents extends Application implements Observer {
         }
         root.setStyle("-fx-background-color: gray");
         primaryStage.setTitle("Mobile Agents");
-        primaryStage.setScene(new Scene(root, 700, 600));
+        primaryStage.setScene(new Scene(root, xMax+100, yMax+100));
         primaryStage.show();
 
         for(Node n:map.keySet()){
