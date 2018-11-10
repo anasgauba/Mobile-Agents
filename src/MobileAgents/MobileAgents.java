@@ -44,7 +44,9 @@ public class MobileAgents extends Application implements Observer {
         Line edge;
         Node onFire=null;
         int id=0;
-        File file = new File("sample2.txt");
+        // If you want to test other graphs, add them to the resources directory and change sample to
+        // to the name of that file in the following line.
+        File file = new File("resources/sample.txt");
         Scanner scanIn = new Scanner(file);
         LinkedList<Node> nodes = new LinkedList<Node>();
         LinkedList<Circle> circles = new LinkedList<>();
@@ -162,6 +164,8 @@ public class MobileAgents extends Application implements Observer {
             onFire.setState(Status.RED);
             onFire.scream();
             baseStation.recieveAgent(new Agent(baseStation, true));
+            baseStation.makeAndSendAgentID();
+
         }
 
     }

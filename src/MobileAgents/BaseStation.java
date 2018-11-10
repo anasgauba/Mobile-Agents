@@ -4,7 +4,7 @@ import java.util.LinkedList;
 
 public class BaseStation extends Node{
 
-    private LinkedList<LinkedList<Object>> agents = new LinkedList<>();
+    private LinkedList<LinkedList<Integer>> agents = new LinkedList<>();
     public BaseStation(Status state,int x, int y){
         super(state,x,y);
     }
@@ -21,7 +21,7 @@ public class BaseStation extends Node{
      */
     @Override
     public synchronized void passID(int id, int x, int y, LinkedList<Node> path, LinkedList<Node> returnPath){
-        LinkedList<Object> agent = new LinkedList<>();
+        LinkedList<Integer> agent = new LinkedList<>();
         agent.addLast(id);
         agent.addLast(x);
         agent.addLast(y);
@@ -29,20 +29,30 @@ public class BaseStation extends Node{
         path.addFirst(this);
         Node node = returnPath.removeFirst();
         returnID(id,x,y,true,path,returnPath);
-        System.out.println(agent.get(0)+", "+agent.get(1)+", "+agent.get(2));
+        System.out.println("ID: "+agent.get(0)+", x: "+agent.get(1)+", y: "+agent.get(2));
     }
     @Override
     public void sendID(int id, int x, int y){
-        LinkedList<Object> agent = new LinkedList<>();
+        LinkedList<Integer> agent = new LinkedList<>();
         agent.addLast(id);
         agent.addLast(x);
         agent.addLast(y);
+        for(LinkedList<Integer> list: agents){
+            if(list.get(0).equals(id)){
+                return;
+            }
+        }
         agents.add(agent);
-        System.out.println(agent.get(0)+", "+agent.get(1)+", "+agent.get(2));
+        System.out.println("ID: "+agent.get(0)+", x: "+agent.get(1)+", y: "+agent.get(2));
+    }
+    @Override
+    public void makeAndSendAgentID(){
+        sendID(id, x, y);
+        id=-1;
     }
     public void printIDs(){
-        for(LinkedList<Object> list: agents){
-            System.out.println(list.get(0)+", "+list.get(1)+", "+list.get(2));
+        for(LinkedList<Integer> list: agents){
+            System.out.println("ID: "+list.get(0)+", x: "+list.get(1)+", y: "+list.get(2));
         }
     }
 }

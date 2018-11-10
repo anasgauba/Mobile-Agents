@@ -41,7 +41,7 @@ public class Node extends Observable implements Runnable{
     protected int x;
     protected int y;
     //protected Circle circle;
-    private int id;
+    protected int id;
     private boolean killed = false;
     private BlockingQueue<LinkedList<Object>> queue;
     private StatusChecker burner=null;
