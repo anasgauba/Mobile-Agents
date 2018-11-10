@@ -9,6 +9,9 @@ import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 
 import java.io.*;
+import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
 /**
@@ -67,7 +70,7 @@ public class MobileAgents extends Application implements Observer {
         // to the name of that file in the following line.
         InputStream file = MobileAgents.class
                 .getResourceAsStream("sample.txt");
-//        File file = new File("resources/sample.txt");
+        //File file = new File("resources/sample.txt");
         Scanner scanIn = new Scanner(file);
         LinkedList<Node> nodes = new LinkedList<Node>();
         LinkedList<Circle> circles = new LinkedList<>();
