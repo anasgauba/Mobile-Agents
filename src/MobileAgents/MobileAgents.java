@@ -67,7 +67,6 @@ public class MobileAgents extends Application implements Observer {
         LinkedList<Circle> circles = new LinkedList<>();
         BaseStation baseStation = null;
         while (scanIn.hasNext()) {
-
             String x = scanIn.next();
             if (x.equals("node")) {
                 node1X = scanIn.nextInt();
