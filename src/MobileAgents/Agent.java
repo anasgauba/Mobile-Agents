@@ -24,11 +24,19 @@ public class Agent extends Thread {
         this.tasks = task;
         start();
     }
+
+    /**
+     * This one kills the agent.
+     */
     public synchronized void kill(){
         queue.add(true);
         killed=true;
     }
 
+    /**
+     * This function does all the agent related tasks. For the first agent, it goes through the nodes randomly to find a
+     * yellow node and stays there. If a node turns yellow, its agent clones itself to the eligible neighbors.
+     */
     @Override
     public void run() {
         while (tasks) {

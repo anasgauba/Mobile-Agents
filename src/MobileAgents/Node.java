@@ -8,15 +8,31 @@ import java.util.Random;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
+/**
+ * The node provides all the required methods to do all the tasks that agent will need or are needed
+ * to propagate the yellow and red nodes. It also has the functionality to send ID, clone, walk, update
+ * display and make the nodes red.
+ */
 public class Node extends Observable implements Runnable{
-
+    /**
+     * This class turns yellow nodes red every 3 seconds.
+     */
     private class StatusChecker extends Thread {
         private boolean dead = false;
         private Node node ;
+
+        /**
+         * this is the constructor that creates this object.
+         * @param node
+         */
         public StatusChecker(Node node){
             this.node=node;
             start();
         }
+
+        /**
+         * The run just runs the program and waits for 3 seconds, then it turns the node red.
+         */
         @Override
         public void run(){
             try {
@@ -45,7 +61,12 @@ public class Node extends Observable implements Runnable{
     private StatusChecker burner=null;
 
 
-
+    /**
+     * This creates the node object.
+     * @param state
+     * @param x
+     * @param y
+     */
     public Node(Status state, int x, int y){
         this.x=x;
         this.y=y;
@@ -84,18 +105,37 @@ public class Node extends Observable implements Runnable{
             }
         }
     }
+
+    /**
+     * Kills the node and agent.
+     */
     public void kill(){
         agent.kill();
         killed=true;
         LinkedList<Object> list = new LinkedList<>();
         queue.add(list);
     }
+
+    /**
+     * gets the state of the node.
+     * @return
+     */
     public synchronized Status getStatus(){
         return state;
     }
+
+    /**
+     * gets the thread that spreads the fire.
+     * @return
+     */
     public StatusChecker getBurner(){
         return burner;
     }
+
+    /**
+     * Sets the state of the node and calls functions to update screen.
+     * @param status
+     */
     public synchronized void setState(Status status){
         state=status;
         if(status.equals(Status.RED)){
@@ -124,6 +164,11 @@ public class Node extends Observable implements Runnable{
         updateScreen("removeBorder");
         return node;
     }
+
+    /**
+     * sets the id for the agent.
+     * @param id
+     */
     public void setID(int id){
         this.id=id;
     }
@@ -133,19 +178,36 @@ public class Node extends Observable implements Runnable{
     public void makeAndSendAgentID(){
         sendID(id, x, y);
     }
+
+    /**
+     * this node adds neighbor node to the neighbor list.
+     * @param node
+     */
     public void addNeighbor(Node node){
         neighbors.add(node);
         liveNeighbors.add(node);
     }
 
+    /**
+     * gets the x position of specific node.
+     * @return
+     */
     public int getX(){
         return x;
     }
-
+    /**
+     * gets the y position of specific node.
+     * @return
+     */
     public int getY(){
         return y;
     }
 
+    /**
+     * receives the agent on a specific node if the agent is not already there.
+     * @param agent
+     * @return
+     */
     public synchronized boolean recieveAgent(Agent agent){
         if(this.agent==null) {
             this.agent = agent;
@@ -155,6 +217,10 @@ public class Node extends Observable implements Runnable{
         return false;
     }
 
+    /**
+     * This function updates the screen element using the observer pattern.
+     * @param arg
+     */
     private synchronized void updateScreen(String arg){
         Platform.runLater(new Runnable() {
             @Override
@@ -182,7 +248,12 @@ public class Node extends Observable implements Runnable{
         }
     }
 
-    public synchronized boolean recieveClone(Agent clone){
+    /**
+     * recieves the clone.
+     * @param clone
+     * @return
+     */
+    private synchronized boolean recieveClone(Agent clone){
         if(agent==null){
             agent=clone;
             makeAndSendAgentID();
@@ -194,6 +265,9 @@ public class Node extends Observable implements Runnable{
         }
     }
 
+    /**
+     * this node lets its neighbors know that he’s dead and fire is spreading.
+     */
     public void scream(){
         updateScreen("removeBorder");
         LinkedList<Node> tempLiveNeighbors = new LinkedList<>(liveNeighbors);
@@ -201,6 +275,11 @@ public class Node extends Observable implements Runnable{
             node.neigborStausChanged(this);
         }
     }
+
+    /**
+     * When a node turns red it tells its neighbors using this, and they turn yellow.
+     * @param caller
+     */
     private synchronized void neigborStausChanged(Node caller){
         if(this.getStatus().equals(Status.BLUE)) {
             this.setState(Status.YELLOW);
@@ -209,6 +288,11 @@ public class Node extends Observable implements Runnable{
         }
     }
 
+    /**
+     * This functions is used in the beginning of the program, to find all possible paths to the base station.
+     * @param path
+     * @param caller
+     */
     public void findPaths(LinkedList<Node> path,Node caller){
         pathsToBaseStation.add(path);
         LinkedList<Node> nextPath = new LinkedList<>(path);
@@ -220,6 +304,12 @@ public class Node extends Observable implements Runnable{
         }
     }
 
+    /**
+     * This one uses the paths to send an id to the next node via calling the pass id function.
+     * @param id
+     * @param x
+     * @param y
+     */
     public synchronized void sendID(int id, int x, int y){
         LinkedList<Node> returnPath = new LinkedList<Node>();
         returnPath.add(this);
@@ -235,6 +325,15 @@ public class Node extends Observable implements Runnable{
         path.removeFirst();
         nextNode.passID(id,x,y,path,returnPath);
     }
+
+    /**
+     * This one adds a message to a blocking queue to be passed.
+     * @param id
+     * @param x
+     * @param y
+     * @param path
+     * @param returnPath
+     */
     public synchronized void passID(int id, int x, int y
             , LinkedList<Node> path, LinkedList<Node> returnPath){
         LinkedList<Object> list = new LinkedList<>();
@@ -247,6 +346,16 @@ public class Node extends Observable implements Runnable{
         //System.out.println(list);
         queue.add(list);
     }
+
+    /**
+     * This function will be called from the queue to pass id to the next node. It checks to see if the current path is
+     * available, then it sends to next node. If not available, it will return false.
+     * @param id
+     * @param x
+     * @param y
+     * @param path
+     * @param returnPath
+     */
     public void passIDFromQueue(int id, int x, int y
             , LinkedList<Node> path, LinkedList<Node> returnPath){
         if(path.size()==0){
@@ -265,6 +374,16 @@ public class Node extends Observable implements Runnable{
         returnPath.addFirst(this);
         nextNode.passID(id,x,y,path,returnPath);
     }
+
+    /**
+     * This adds return status to the queue.
+     * @param id
+     * @param x
+     * @param y
+     * @param status
+     * @param path
+     * @param returnPath
+     */
     public synchronized void returnID(int id, int x, int y
             ,boolean status, LinkedList<Node> path,LinkedList<Node> returnPath){
         LinkedList<Object> list = new LinkedList<>();
@@ -276,6 +395,16 @@ public class Node extends Observable implements Runnable{
         list.addLast(returnPath);
         queue.add(list);
     }
+
+    /**
+     * This returns the success or not success of the function.
+     * @param id
+     * @param x
+     * @param y
+     * @param status
+     * @param path
+     * @param returnPath
+     */
     public void returnIDFromQueue (int id, int x, int y
             ,boolean status, LinkedList<Node> path,LinkedList<Node> returnPath){
         if(!status) {

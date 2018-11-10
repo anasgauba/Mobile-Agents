@@ -17,9 +17,17 @@ import java.util.*;
 public class MobileAgents extends Application implements Observer {
     private Map<Node,Circle> map = new HashMap<>();
 
+    /**
+     * launches the program.
+     * @param args
+     */
     public static void main(String [] args){
         launch(args);
     }
+
+    /**
+     * stops the program, when user exit the application.
+     */
     @Override
     public void stop(){
         System.exit(0);

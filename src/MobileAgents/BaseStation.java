@@ -9,6 +9,10 @@ public class BaseStation extends Node{
         super(state,x,y);
     }
 
+    /**
+     * This function finds the path from any node to this node and save them there. Note that
+     * it is only invoked at the start of the program.
+     */
     public void findPaths(){
         for(Node node:neighbors){
             LinkedList<Node> paths = new LinkedList<>();
@@ -32,6 +36,13 @@ public class BaseStation extends Node{
         returnID(id,x,y,true,path,returnPath);
         System.out.println("ID: "+agent.get(0)+", x: "+agent.get(1)+", y: "+agent.get(2));
     }
+
+    /**
+     * This one save the id because it don't need to save it.
+     * @param id
+     * @param x
+     * @param y
+     */
     @Override
     public void sendID(int id, int x, int y){
         LinkedList<Integer> agent = new LinkedList<>();
@@ -46,11 +57,19 @@ public class BaseStation extends Node{
         agents.add(agent);
         System.out.println("ID: "+agent.get(0)+", x: "+agent.get(1)+", y: "+agent.get(2));
     }
+
+    /**
+     * this one makes and send agent ID.
+     */
     @Override
     public void makeAndSendAgentID(){
         sendID(id, x, y);
         id=-1;
     }
+
+    /**
+     * Prints all ID's
+     */
     public void printIDs(){
         for(LinkedList<Integer> list: agents){
             System.out.println("ID: "+list.get(0)+", x: "+list.get(1)+", y: "+list.get(2));
