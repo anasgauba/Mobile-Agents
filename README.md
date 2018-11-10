@@ -16,17 +16,18 @@ Wo did which part?
 - It is hard to explain this because many of the functions were created with 
 the contribution from both of us. The functions written by both of us are:
 MobileAgents.java and Agent.java. We also designed the diagram doc as well.
+
 Farhang:
--I did the basic design and layout of the program and what the functions 
+- I did the basic design and layout of the program and what the functions 
 would be.
--I wrote all the functions in the Node, except for the cloneAgent, passAgent 
+- I wrote all the functions in the Node, except for the cloneAgent, passAgent 
 and recieveAgent that we wrote together.
 And I wrote BaseStation.java.
 
 Anas:
--In addition to the functions that we wrote together, I did the design 
+- In addition to the functions that we wrote together, I did the design 
 diagram doc, worked on some functions in node, MobileAgents, and Agent.
--I also did most of the testing. I found errors and we tried to fix the error
+- I also did most of the testing. I found errors and we tried to fix the error
  together.
 
 NOTE:
