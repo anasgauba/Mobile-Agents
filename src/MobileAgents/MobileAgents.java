@@ -65,9 +65,9 @@ public class MobileAgents extends Application implements Observer {
         // If you want to test other graphs, add them to the resources
         // directory and change sample to
         // to the name of that file in the following line.
-        InputStream file = MobileAgents.class
-                .getResourceAsStream("sample.txt");
-//        File file = new File("resources/sample.txt");
+        //InputStream file = MobileAgents.class
+        //        .getResourceAsStream("sample.txt");
+        File file = new File("resources/sample.txt");
         Scanner scanIn = new Scanner(file);
         LinkedList<Node> nodes = new LinkedList<Node>();
         LinkedList<Circle> circles = new LinkedList<>();
@@ -121,9 +121,9 @@ public class MobileAgents extends Application implements Observer {
                 }
             }
         }
-        InputStream file2 = MobileAgents.class
-                .getResourceAsStream("sample.txt");
-        Scanner scanIn2 = new Scanner(file2);
+        //InputStream file2 = MobileAgents.class
+        //        .getResourceAsStream("sample.txt");
+        Scanner scanIn2 = new Scanner(file);
         while (scanIn2.hasNext()) {
             String x = scanIn2.next();
             if (x.equals("edge")) {
