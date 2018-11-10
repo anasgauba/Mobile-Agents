@@ -5,7 +5,8 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
- * This is the agent class that at first will find a yellow node, then it clones itself on yellow nodes and on their blue neighbors.
+ * This is the agent class that at first will find a yellow node, then it
+ * clones itself on yellow nodes and on their blue neighbors.
  */
 public class Agent extends Thread {
     private Node currentNode;
@@ -16,8 +17,8 @@ public class Agent extends Thread {
 
     /**
      * This is the constructor that creates the agent with the knowledge
-     * @param node
-     * @param task
+     * @param node on which agent is sitting.
+     * @param task true for 1st agent for random walk.
      */
     public Agent(Node node, boolean task) {
         this.currentNode = node;
@@ -34,8 +35,9 @@ public class Agent extends Thread {
     }
 
     /**
-     * This function does all the agent related tasks. For the first agent, it goes through the nodes randomly to find a
-     * yellow node and stays there. If a node turns yellow, its agent clones itself to the eligible neighbors.
+     * This function does all the agent related tasks. For the first agent,
+     * it goes through the nodes randomly to find a yellow node and stays there.
+     * If a node turns yellow, its agent clones itself to the eligible neighbors.
      */
     @Override
     public void run() {

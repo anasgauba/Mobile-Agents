@@ -9,8 +9,9 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
- * The node provides all the required methods to do all the tasks that agent will need or are needed
- * to propagate the yellow and red nodes. It also has the functionality to send ID, clone, walk, update
+ * The node provides all the required methods to do all the tasks that
+ * agent will need or are needed to propagate the yellow and red nodes. It
+ * also has the functionality to send ID, clone, walk, update
  * display and make the nodes red.
  */
 public class Node extends Observable implements Runnable{
@@ -18,12 +19,11 @@ public class Node extends Observable implements Runnable{
      * This class turns yellow nodes red every 3 seconds.
      */
     private class StatusChecker extends Thread {
-        private boolean dead = false;
-        private Node node ;
+        private Node node;
 
         /**
          * this is the constructor that creates this object.
-         * @param node
+         * @param node passed in node
          */
         public StatusChecker(Node node){
             this.node=node;
@@ -31,7 +31,8 @@ public class Node extends Observable implements Runnable{
         }
 
         /**
-         * The run just runs the program and waits for 3 seconds, then it turns the node red.
+         * The run just runs the program and waits for 3 seconds,
+         * then it turns the node red.
          */
         @Override
         public void run(){
@@ -63,9 +64,9 @@ public class Node extends Observable implements Runnable{
 
     /**
      * This creates the node object.
-     * @param state
-     * @param x
-     * @param y
+     * @param state of the node.
+     * @param x nodeX location.
+     * @param y nodeY location.
      */
     public Node(Status state, int x, int y){
         this.x=x;
@@ -80,10 +81,11 @@ public class Node extends Observable implements Runnable{
     }
 
     /**
-     * This function will check for the status of the node and if the node is yellow it has a timer
-     * to wait for 2 seconds and then turn red. If it turns red it should notify other neighbors.
-     * It also updates the color of Circle object.
-     * (Note than in the future we might use BlockingQueues, so run will handle them)
+     * This function will check for the status of the node and if the node is
+     * yellow it has a timer to wait for 2 seconds and then turn red. If it
+     * turns red it should notify other neighbors. It also updates the color
+     * of Circle object.(Note than in the future we might use BlockingQueues,
+     * so run will handle them)
      */
     @Override
     public void run(){
@@ -92,11 +94,13 @@ public class Node extends Observable implements Runnable{
                 LinkedList<Object> list = queue.take();
                 if(list.size()!=0) {
                     if (list.get(3) == null) {
-                        passIDFromQueue((int) list.get(0), (int) list.get(1), (int) list.get(2)
-                                , (LinkedList<Node>) list.get(4), (LinkedList<Node>) list.get(5));
+                        passIDFromQueue((int) list.get(0), (int) list.get(1),
+                                (int) list.get(2), (LinkedList<Node>) list
+                                        .get(4), (LinkedList<Node>) list.get(5));
                     } else {
-                        returnIDFromQueue((int) list.get(0), (int) list.get(1), (int) list.get(2)
-                                , (boolean) list.get(3), (LinkedList<Node>) list.get(4), (LinkedList<Node>) list.get(5));
+                        returnIDFromQueue((int)list.get(0),(int)list.get(1),
+                                (int) list.get(2), (boolean) list.get(3),
+                                (LinkedList<Node>) list.get(4),(LinkedList<Node>) list.get(5));
                     }
                 }
             }
@@ -119,7 +123,7 @@ public class Node extends Observable implements Runnable{
 
     /**
      * gets the state of the node.
-     * @return
+     * @return the status of the node.
      */
     public synchronized Status getStatus(){
         return state;
@@ -127,7 +131,7 @@ public class Node extends Observable implements Runnable{
 
     /**
      * gets the thread that spreads the fire.
-     * @return
+     * @return the statusChecker
      */
     public StatusChecker getBurner(){
         return burner;
@@ -135,7 +139,7 @@ public class Node extends Observable implements Runnable{
 
     /**
      * Sets the state of the node and calls functions to update screen.
-     * @param status
+     * @param status the state of the node.
      */
     public synchronized void setState(Status status){
         state=status;
@@ -168,7 +172,7 @@ public class Node extends Observable implements Runnable{
 
     /**
      * sets the id for the agent.
-     * @param id
+     * @param id sets id.
      */
     public void setID(int id){
         this.id=id;
@@ -182,7 +186,7 @@ public class Node extends Observable implements Runnable{
 
     /**
      * this node adds neighbor node to the neighbor list.
-     * @param node
+     * @param node to add neighbor of
      */
     public void addNeighbor(Node node){
         neighbors.add(node);
@@ -191,14 +195,14 @@ public class Node extends Observable implements Runnable{
 
     /**
      * gets the x position of specific node.
-     * @return
+     * @return x location of node.
      */
     public int getX(){
         return x;
     }
     /**
      * gets the y position of specific node.
-     * @return
+     * @return y location of node.
      */
     public int getY(){
         return y;
@@ -206,8 +210,8 @@ public class Node extends Observable implements Runnable{
 
     /**
      * receives the agent on a specific node if the agent is not already there.
-     * @param agent
-     * @return
+     * @param agent on this node,
+     * @return true/false if receiveAgent.
      */
     public synchronized boolean recieveAgent(Agent agent){
         if(this.agent==null) {
@@ -220,7 +224,7 @@ public class Node extends Observable implements Runnable{
 
     /**
      * This function updates the screen element using the observer pattern.
-     * @param arg
+     * @param arg for observer (MobileAgents)
      */
     private synchronized void updateScreen(String arg){
         Platform.runLater(new Runnable() {
@@ -250,8 +254,8 @@ public class Node extends Observable implements Runnable{
     }
     /**
      * recieves the clone.
-     * @param clone
-     * @return
+     * @param clone of agent
+     * @return true/false if node receives clone.
      */
     private synchronized boolean recieveClone(Agent clone){
         if(agent==null){
@@ -277,8 +281,9 @@ public class Node extends Observable implements Runnable{
     }
 
     /**
-     * When a node turns red it tells its neighbors using this, and they turn yellow.
-     * @param caller
+     * When a node turns red it tells its neighbors using this, and they turn
+     * yellow.
+     * @param caller node is calling.
      */
     private synchronized void neigborStausChanged(Node caller){
         if(this.getStatus().equals(Status.BLUE)) {
@@ -289,9 +294,10 @@ public class Node extends Observable implements Runnable{
     }
 
     /**
-     * This functions is used in the beginning of the program, to find all possible paths to the base station.
-     * @param path
-     * @param caller
+     * This functions is used in the beginning of the program, to
+     * find all possible paths to the base station.
+     * @param path of node.
+     * @param caller node is calling.
      */
     public void findPaths(LinkedList<Node> path,Node caller){
         pathsToBaseStation.add(path);
@@ -305,10 +311,11 @@ public class Node extends Observable implements Runnable{
     }
 
     /**
-     * This one uses the paths to send an id to the next node via calling the pass id function.
-     * @param id
-     * @param x
-     * @param y
+     * This one uses the paths to send an id to the next node via calling the
+     * pass id function.
+     * @param id of agent.
+     * @param x nodeX location.
+     * @param y nodeY location.
      */
     public synchronized void sendID(int id, int x, int y){
         LinkedList<Node> returnPath = new LinkedList<Node>();
@@ -328,11 +335,11 @@ public class Node extends Observable implements Runnable{
 
     /**
      * This one adds a message to a blocking queue to be passed.
-     * @param id
-     * @param x
-     * @param y
-     * @param path
-     * @param returnPath
+     * @param id of agent.
+     * @param x nodeX location.
+     * @param y nodeY location.
+     * @param path of the node.
+     * @param returnPath of baseStation.
      */
     public synchronized void passID(int id, int x, int y
             , LinkedList<Node> path, LinkedList<Node> returnPath){
@@ -348,13 +355,14 @@ public class Node extends Observable implements Runnable{
     }
 
     /**
-     * This function will be called from the queue to pass id to the next node. It checks to see if the current path is
-     * available, then it sends to next node. If not available, it will return false.
-     * @param id
-     * @param x
-     * @param y
-     * @param path
-     * @param returnPath
+     * This function will be called from the queue to pass id to the next node.
+     * It checks to see if the current path is available,
+     * then it sends to next node. If not available, it will return false.
+     * @param id of agent.
+     * @param x nodeX location.
+     * @param y nodeY location.
+     * @param path of node.
+     * @param returnPath of node.
      */
     public void passIDFromQueue(int id, int x, int y
             , LinkedList<Node> path, LinkedList<Node> returnPath){
@@ -379,12 +387,12 @@ public class Node extends Observable implements Runnable{
 
     /**
      * This adds return status to the queue.
-     * @param id
-     * @param x
-     * @param y
-     * @param status
-     * @param path
-     * @param returnPath
+     * @param id of agent.
+     * @param x nodeX location.
+     * @param y nodeY location.
+     * @param status of node.
+     * @param path of node.
+     * @param returnPath of node.
      */
     public synchronized void returnID(int id, int x, int y
             ,boolean status, LinkedList<Node> path,LinkedList<Node> returnPath){
@@ -400,12 +408,12 @@ public class Node extends Observable implements Runnable{
 
     /**
      * This returns the success or not success of the function.
-     * @param id
-     * @param x
-     * @param y
-     * @param status
-     * @param path
-     * @param returnPath
+     * @param id of agent.
+     * @param x nodeX location.
+     * @param y nodeY location.
+     * @param status of node.
+     * @param path of node.
+     * @param returnPath of node.
      */
     public void returnIDFromQueue (int id, int x, int y
             ,boolean status, LinkedList<Node> path,LinkedList<Node> returnPath){

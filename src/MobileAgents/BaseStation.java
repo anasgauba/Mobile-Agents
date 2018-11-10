@@ -10,8 +10,8 @@ public class BaseStation extends Node{
     }
 
     /**
-     * This function finds the path from any node to this node and save them there. Note that
-     * it is only invoked at the start of the program.
+     * This function finds the path from any node to this node and save them
+     * there. Note that it is only invoked at the start of the program.
      */
     public void findPaths(){
         for(Node node:neighbors){
@@ -39,9 +39,9 @@ public class BaseStation extends Node{
 
     /**
      * This one save the id because it don't need to save it.
-     * @param id
-     * @param x
-     * @param y
+     * @param id of agent.
+     * @param x nodeX location.
+     * @param y nodeY location.
      */
     @Override
     public void sendID(int id, int x, int y){
