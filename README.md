@@ -30,7 +30,7 @@ diagram doc, worked on some functions in node, MobileAgents, and Agent.
 - I also did most of the testing. I found errors and we tried to fix the error
  together.
 
-NOTE:
+NOTE1:
 This program will first create one agent in the base station. This agent will walk through the 
 graph until it finds a yellow node. Then it will clone itself to its yellow and blue neighbors.
 This is EXACTLY as was described in the class and assignment.
@@ -42,3 +42,7 @@ cases that yellow nodes don't have any edges to other yellow nodes at the start 
  We could fix this problem easily by doing more than one walk,
 but this would violate the program specification. The code perfectly runs on any graph that doesn't 
 have this issue (like the provided sample graph and the one in the lecture).
+
+NOTE2:
+Since the base station recieves the id and location of the new agents, if it dies, it cannot get and print
+the agents that are created after that, but the program continues to work.
