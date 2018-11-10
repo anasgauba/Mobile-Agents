@@ -13,22 +13,17 @@ public class Agent extends Thread {
     public Agent(Node node, boolean task) {
         this.currentNode = node;
         this.tasks = task;
-//        this.killed = false;
         start();
     }
     public synchronized void kill(){
         queue.add(true);
         killed=true;
     }
-/*    public void updateCurrentNode(Node node){
-        currentNode=node;
-    }*/
+
     @Override
     public void run() {
         while (tasks) {
-            Node nextNode = currentNode.passAgent();
-            //System.out.println(nextNode.getStatus());
-            currentNode = nextNode;
+            currentNode = currentNode.passAgent();
             if (currentNode.getStatus().equals(Status.YELLOW)) {
                 currentNode.sendCloneAgent();
                 tasks = false;
@@ -42,8 +37,6 @@ public class Agent extends Thread {
             else if(cloned && currentNode.getBurner()!=null){
                 try {
                     boolean b = queue.take();
-                    System.out.println(">>>>>>>>>>>>>>>>>>>>>"+b);
-                    //stop();
                     killed=true;
                 }
                 catch (Exception e){
@@ -51,6 +44,5 @@ public class Agent extends Thread {
                 }
             }
         }
-        //currentNode.scream();
     }
 }

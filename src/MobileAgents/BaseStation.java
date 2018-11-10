@@ -1,7 +1,5 @@
 package MobileAgents;
 
-import javafx.scene.shape.Circle;
-
 import java.util.LinkedList;
 
 public class BaseStation extends Node{

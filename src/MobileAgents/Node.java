@@ -1,19 +1,13 @@
 package MobileAgents;
 
 import javafx.application.Platform;
-import javafx.geometry.Point2D;
-import javafx.scene.paint.Paint;
-import javafx.scene.shape.Circle;
 
 import java.util.LinkedList;
 import java.util.Observable;
-import java.util.Observer;
 import java.util.Random;
-import java.util.concurrent.BlockingDeque;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-//public class Node extends Thread{
 public class Node extends Observable implements Runnable{
 
     private class StatusChecker extends Thread {
@@ -91,14 +85,11 @@ public class Node extends Observable implements Runnable{
                 killed=true;
             }
         }
-        System.out.println("I DIEEEEDDDDDDDDDDDDDD TOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
     }
     public void kill(){
-        System.out.println("KKKKKKKKKIIIIIIIIIIIIIIIIIIIIIKLLLLLLLLLLLLLLLLLLLLL");
         agent.kill();
         killed=true;
         LinkedList<Object> list = new LinkedList<>();
-        //System.out.println(list);
         queue.add(list);
     }
     public synchronized Status getStatus(){
@@ -111,15 +102,9 @@ public class Node extends Observable implements Runnable{
         state=status;
         if(status.equals(Status.RED)){
             updateScreen("red");
-            //paint("red");
-            //circle.setFill(Paint.valueOf("red"));
-            //System.out.println(x+"  "+y);
         }
         else if(status.equals(Status.YELLOW)){
-            System.out.println("]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]"+getX()+"---"+getY());
             updateScreen("yellow");
-            //paint("yellow");
-            //circle.setFill(Paint.valueOf("yellow"));
         }
     }
     /**
@@ -171,20 +156,15 @@ public class Node extends Observable implements Runnable{
         }
         return false;
     }
-            /*private synchronized void markNode(){
-                setChanged();
-                notifyObservers("border");
-                //circle.setStroke(Paint.valueOf("purple"));
-                //circle.setStrokeWidth(3);
-            }
-            private synchronized void unmarkNode(){
-                setChanged();
-                notifyObservers("removeBorder");
-                //circle.setStroke(null);
-            }*/
+
     private synchronized void updateScreen(String arg){
-        setChanged();
-        notifyObservers(arg);
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                setChanged();
+                notifyObservers(arg);
+            }
+        });
     }
     /**
      * It clones and sends the clone of the agent to to live nodes that are blue
@@ -206,7 +186,6 @@ public class Node extends Observable implements Runnable{
 
     public synchronized boolean recieveClone(Agent clone){
         if(agent==null){
-            System.out.println("Received>>>"+this.getX()+","+this.getY());
             agent=clone;
             makeAndSendAgentID();
             updateScreen("border");
@@ -226,10 +205,8 @@ public class Node extends Observable implements Runnable{
     }
     private synchronized void neigborStausChanged(Node caller){
         if(this.getStatus().equals(Status.BLUE)) {
-            System.out.println("###########################>>>>"+getX()+"***"+getY());
             this.setState(Status.YELLOW);
             burner = new StatusChecker(this);
-            //System.out.println(agent);
             liveNeighbors.remove(caller);
         }
     }
@@ -239,7 +216,6 @@ public class Node extends Observable implements Runnable{
         LinkedList<Node> nextPath = new LinkedList<>(path);
         nextPath.addFirst(this);
         for(Node node: neighbors){
-            //if(!node.equals(caller)){
             if(!path.contains(node)){
                 node.findPaths(nextPath,this);
             }
@@ -247,14 +223,10 @@ public class Node extends Observable implements Runnable{
     }
 
     public synchronized void sendID(int id, int x, int y){
-        System.out.println("send id..."+id);
         LinkedList<Node> returnPath = new LinkedList<Node>();
         returnPath.add(this);
         LinkedList<Node> path = pathsToBaseStation.getFirst();
         Node nextNode = path.getFirst();
-        //System.out.println(liveNeighbors);
-        //System.out.println(path);
-        //System.out.println(this);
         while(!liveNeighbors.contains(nextNode)){
             pathsToBaseStation.removeFirst();
             if(pathsToBaseStation.size()>=1) {
@@ -265,9 +237,6 @@ public class Node extends Observable implements Runnable{
         path.removeFirst();
         nextNode.passID(id,x,y,path,returnPath);
     }
-    //public void passIDToQueue(int id, int x, int y, LinkedList<Node> path, LinkedList<Node> returnPath){
-    //
-    //}
     public synchronized void passID(int id, int x, int y, LinkedList<Node> path, LinkedList<Node> returnPath){
         LinkedList<Object> list = new LinkedList<>();
         list.addLast(id);
@@ -280,7 +249,6 @@ public class Node extends Observable implements Runnable{
         queue.add(list);
     }
     public void passIDFromQueue(int id, int x, int y, LinkedList<Node> path, LinkedList<Node> returnPath){
-        //System.out.println(">>>"+this);
         if(path.size()==0){
             path.addFirst(this);
             Node node = returnPath.removeFirst();
@@ -298,7 +266,6 @@ public class Node extends Observable implements Runnable{
         nextNode.passID(id,x,y,path,returnPath);
     }
     public synchronized void returnID(int id, int x, int y,boolean status, LinkedList<Node> path,LinkedList<Node> returnPath){
-        System.out.println("=====>"+status);
         LinkedList<Object> list = new LinkedList<>();
         list.addLast(id);
         list.addLast(x);
@@ -309,8 +276,6 @@ public class Node extends Observable implements Runnable{
         queue.add(list);
     }
     public void returnIDFromQueue (int id, int x, int y,boolean status, LinkedList<Node> path,LinkedList<Node> returnPath){
-        //System.out.println(returnPath);
-        //System.out.println(this);
         if(!status) {
             pathsToBaseStation.remove(path);
         }
