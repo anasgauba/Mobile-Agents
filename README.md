@@ -43,6 +43,6 @@ cases that yellow nodes don't have any edges to other yellow nodes at the start 
 but this would violate the program specification. The code perfectly runs on any graph that doesn't 
 have this issue (like the provided sample graph and the one in the lecture).
 
-NOTE2:
+NOTE2: 
 Since the base station recieves the id and location of the new agents, if it dies, it cannot get and print
 the agents that are created after that, but the program continues to work.
