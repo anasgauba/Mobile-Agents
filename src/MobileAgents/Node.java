@@ -43,7 +43,7 @@ public class Node extends Observable implements Runnable{
 
             }
             catch(Exception e){
-                //System.out.println(e);
+                System.out.println(e);
             }
         }
     }
@@ -87,14 +87,9 @@ public class Node extends Observable implements Runnable{
      */
     @Override
     public void run(){
-        LinkedList<Object> list=null;
         while(!killed) {
             try {
-                list = queue.take();
-            }
-            catch (Exception e){
-                System.out.println(e);
-            }
+                LinkedList<Object> list = queue.take();
                 if(list.size()!=0) {
                     if (list.get(3) == null) {
                         passIDFromQueue((int) list.get(0), (int) list.get(1), (int) list.get(2)
@@ -104,6 +99,11 @@ public class Node extends Observable implements Runnable{
                                 , (boolean) list.get(3), (LinkedList<Node>) list.get(4), (LinkedList<Node>) list.get(5));
                     }
                 }
+            }
+            catch (Exception e){
+                System.out.println(e);
+                killed=true;
+            }
         }
     }
 
