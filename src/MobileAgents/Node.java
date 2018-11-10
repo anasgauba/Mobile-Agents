@@ -99,7 +99,8 @@ public class Node extends Observable implements Runnable{
                                 , (boolean) list.get(3), (LinkedList<Node>) list.get(4), (LinkedList<Node>) list.get(5));
                     }
                 }
-            } catch (Exception e) {
+            }
+            catch (Exception e){
                 System.out.println(e);
                 killed=true;
             }
@@ -247,7 +248,6 @@ public class Node extends Observable implements Runnable{
             }
         }
     }
-
     /**
      * recieves the clone.
      * @param clone
@@ -362,6 +362,7 @@ public class Node extends Observable implements Runnable{
             path.addFirst(this);
             Node node = returnPath.removeFirst();
             node.returnID(id,x,y,true,path,returnPath);
+            return;
         }
         Node nextNode = path.getFirst();
         if(!liveNeighbors.contains(nextNode)){
@@ -369,6 +370,7 @@ public class Node extends Observable implements Runnable{
             path.addFirst(this);
             Node node = returnPath.removeFirst();
             node.returnID(id,x,y,false,path,returnPath);
+            return;
         }
         path.removeFirst();
         returnPath.addFirst(this);
