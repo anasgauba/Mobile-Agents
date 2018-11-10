@@ -1,5 +1,8 @@
 Mobile Agents App: 
-- This program, first reads in a map. The default map is in the resources. 
+- This program, first reads in a map. The default map (sample.txt) is in the 
+resources,you can easily check graphTest graph in resources folder to check the 
+simulation for another graph by simply changing line 70 in MobileAgents.java 
+(File file = new File("resources/graphTest.txt"))
 - Then it creates a map based on those locations using the 
 node and Basestation class. Then, it creates an agent and puts it in the basestation. The agent will move in the graph untill it finds a yellow node.
 Note that the node on fire is red and the ones beside those on fire are yellow. After 
