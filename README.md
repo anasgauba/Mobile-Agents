@@ -21,3 +21,10 @@ And I wrote BaseStation.java.
 Anas:
 In addition to the functions that we wrote together, I did the design diagram doc, worked on some functions in node, MobileAgents, and Agent.
 I also did most of the testing. I found errors and we tried to fix the error together.
+
+NOTE:
+This program will first create one agent in the base stattion. This agent will walk through the 
+graph until it finds a yellow node. Then it will clone itself to its yellow and blue neighbors.
+If there are other yellow nodes and the node doesn't have access to those yellow nodes (They are not 
+their neighbors), then it won't (obviously) clone itself to that node, and we will end up with some
+yellow nodes that don't have agents. 
